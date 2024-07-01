@@ -10,11 +10,6 @@
 
 <!-- 내용 추가 -->
 {% block content %}
-<header>
-    <div class="logo">
-        <img src="{{ url_for('static', filename='src/logo.svg') }}" alt="Logo" class="logo-image">
-    </div>
-</header>
 <main>
     <div class="button-grid">
         <button class="large-button"></button>
@@ -26,7 +21,8 @@
                 </div>
                 <p class="profile-name">{{ flask_login.current_user.Username }}</p>
                 <div class="user-title-container">
-                    <span class="first-name">새로운</span><span class="second-name">뉴비</span>
+                    <span class="first-name">{{ flask_login.current_user.user_profile[0].FirstName}}</span>
+                    <span class="second-name">{{ flask_login.current_user.user_profile[0].LastName }}</span>
                 </div>
         </div>
         <a href="{{url_for('error')}}"><button class="wait-btn"></button></a>
@@ -35,9 +31,6 @@
         <a href="{{url_for('introservice')}}"><button class="serviceintro-btn"></button></a>
     </div>
 </main>
-<footer>
-    <p>2024 @ made by 방해금지모드</p>
-</footer>
 {% endblock %}
 
 {% block scripts %}

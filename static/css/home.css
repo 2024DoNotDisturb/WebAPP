@@ -31,13 +31,19 @@ main {
     align-items: center;
 }
 
+@keyframes gentleShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
 .button-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 10px;
     width: 80%;
-    height: 80%;
+    height: 80vh;
 }
 
 .button-grid button {
@@ -49,12 +55,6 @@ main {
     transition: all 0.5s ease;
     position: relative;
     box-shadow: inset -2px -2px 6px rgba(255, 255, 255, 0.05), inset 2px 2px 6px rgba(0, 0, 0, 0.8);
-}
-
-@keyframes gentleShake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
 }
 
 .button-grid button {

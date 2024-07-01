@@ -10,11 +10,14 @@
 </head>
 <body id="body-pd">
     {% include 'layouts/sidebar.html' %}
+    {% include 'layouts/header.html' %}
 
     <div class="content">
         {% block content %}
         {% endblock %}
     </div>
+
+    {% include 'layouts/footer.html' %}
 
     <!-- IONICONS -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
