@@ -17,7 +17,11 @@
         <button class="routine-btn"></button>
         <div class="user-profile">
                 <div class="profile-image-container">
-                    <img src="{{ url_for('static', filename='src/default-profile-img.png') }}" alt="User Profile" class="profile-image">
+                    {% if encoded_profile_picture %}
+                    <img src="data:image/jpeg;base64,{{ encoded_profile_picture }}" alt="User Profile" class="profile-image">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='src/default-profile-img.png') }}" alt="Default Profile Image" class="profile-image">
+                    {% endif %}             
                 </div>
                 <p class="profile-name">{{ flask_login.current_user.Username }}</p>
                 <div class="user-title-container">

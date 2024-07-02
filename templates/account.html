@@ -2,44 +2,206 @@
 {% block title %} 유온 Your Own {% endblock %}
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/account.css') }}">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-<div class="account-page">
-    <div class="profile-management">
-        <h2>프로필 관리</h2>
-        <div class="profile-info">
-            <div class="profile-details">
-                <img src="{{ url_for('static', filename='src/default-profile-img.png') }}" alt="User Profile" class="profile-image">
-                <p class="profile-name">{{ flask_login.current_user.Username }}</p>
-
-                <div class="profile-input">
-                    <p class="profile-name">ID</p> <input id="input-id" type="text" placeholder="{{ flask_login.current_user.ID }}" disabled>
+<div class="container">
+    <div class="main-body">
+        <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+                <!-- 프로필 사진 -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center position-relative">
+                            <div class="profile-image-wrapper">
+                                <img src="{{ url_for('static', filename='src/default-profile-img.png') }}"
+                                    alt="Default Profile Image" class="rounded-circle" width="150">
+                                <!-- Edit 아이콘과 파일 업로드 input -->
+                                <label for="fileInput" class="material-symbols-outlined edit-icon">edit</label>
+                                <input type="file" id="fileInput" style="display: none;">
+                                <!-- Edit 아이콘과 파일 업로드 input 끝 -->
+                            </div>
+                            <div class="mt-3">
+                                <h4>{{ flask_login.current_user.Username }}</h4>
+                                <p class="text-secondary mb-1">{{ flask_login.current_user.user_profile[0].FirstName }}
+                                    {{ flask_login.current_user.user_profile[0].LastName }}</p>
+                                <p class="text-muted font-size-sm">{{ flask_login.current_user.Email }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="profile-input">
-                    <p class="profile-name">Password</p> <input id="input-password" type="text" placeholder="**********" disabled>
+                
+                
+
+                <!-- 칭호 -->
+                <div class="card mt-3">
+                    <ul class="list-group list-group-flush">
+                        <!-- 칭호1 -->
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline">
+                                    <path
+                                        d="m8 0 1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 6l.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 12l-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 6l-.306-1.854 1.337-1.32.842-1.68L6.331.864z" />
+                                    <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1z" />
+                                </svg>칭호1
+                            </h6>
+                            <span class="text-secondary">{{ flask_login.current_user.user_profile[0].FirstName }}</span>
+                        </li>
+                        <!-- 칭호2 -->
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline">
+                                    <path
+                                        d="m8 0 1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 6l.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 12l-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 6l-.306-1.854 1.337-1.32.842-1.68L6.331.864z" />
+                                    <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1z" />
+                                </svg>칭호2
+                            </h6>
+                            <span class="text-secondary">{{ flask_login.current_user.user_profile[0].LastName }}</span>
+                        </li>
+                        <!-- 칭호 수정 버튼 -->
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <button id="edit-title-btn" class="edit-title-btn ml-auto">칭호 수정</button>
+                            <button id="save-title-btn" class="edit-title-btn d-none">저장</button>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </div>
 
-        <div class="edit-save-buttons">
-            <button id="edit-button">Edit</button>
-            <button id="save-button" style="display: none;">Save</button>
-        </div>
-    </div>
-    
-    <div class="side-by-side">
-        <div class="subscription-management">
-            <h2>구독 관리</h2>
-        </div>
-        <div class="account-management">
-            <h2>계정 관리</h2>
 
+            <div class="col-md-8">
+                <!-- 계정 정보 -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Name</h6>
+                            </div>
+                            <div class="col-sm-9 text_input">
+                                <span id="username">{{ flask_login.current_user.Username }}</span>
+                                <input type="text" id="edit-username" class="form-control d-none"
+                                    value="{{ flask_login.current_user.Username }}">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Password</h6>
+                            </div>
+                            <div class="col-sm-9 text_input">
+                                ********
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text_input">
+                                <span id="email">{{ flask_login.current_user.Email }}</span>
+                                <input type="email" id="edit-email" class="form-control d-none"
+                                    value="{{ flask_login.current_user.Email }}">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Phone</h6>
+                            </div>
+                            <div class="col-sm-9 text_input">
+                                <span id="phone">{{ flask_login.current_user.Phone }}</span>
+                                <input type="tel" id="edit-phone" class="form-control d-none"
+                                    value="{{ flask_login.current_user.Phone }}">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Address</h6>
+                            </div>
+                            <div class="col-sm-9 text_input">
+                                <span id="address">{{ flask_login.current_user.user_profile[0].Address }}</span>
+                                <input type="text" id="edit-address" class="form-control d-none"
+                                    value="{{ flask_login.current_user.user_profile[0].Address }}">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Status</h6>
+                            </div>
+                            <div class="col-sm-9 text_input">
+                                <select name="status" id="edit-status" class="form-control" disabled>
+                                    <option value="active" {% if flask_login.current_user.Status=='active' %}selected{%endif %}>active</option>
+                                    <option value="inactive" {% if flask_login.current_user.Status=='inactive' %}selected{% endif %}>inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-12" style="text-align: right;">
+                                <button id="edit-profile-btn" class="btn">Edit</button>
+                                <button id="save-changes-btn" class="btn d-none">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 구독 정보 -->
+                <div class="row gutters-sm">
+                    <div class="col-sm-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6 class="d-flex align-items-center mb-3">
+                                    <i class="material-icons mr-2" style="color: #f28b30;">Premium</i>Service1
+                                </h6>
+                                <small>2024.12.01 - 2024.12.31</small>
+                                <div class="progress mb-3" style="height: 5px">
+                                    <div class="progress-bar" role="progressbar" style="width: 80%"
+                                        aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <small>Pay</small>
+                                <div class="progress mb-3" style="height: 5px">
+                                    <div class="progress-bar" role="progressbar" style="width: 100%"
+                                        aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6 class="d-flex align-items-center mb-3">
+                                    <i class="material-icons mr-2" style="color: #f28b30;">Basic</i>Service2
+                                </h6>
+                                <small>2024.12.01 - 2024.12.31</small>
+                                <div class="progress mb-3" style="height: 5px">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"
+                                        aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <small>Pay</small>
+                                <div class="progress mb-3" style="height: 5px">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 100%"
+                                        aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ url_for('static', filename='js/account.js') }}"></script>
 {% endblock %}

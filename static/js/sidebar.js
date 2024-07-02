@@ -1,4 +1,4 @@
-/* 메뉴 펼치기*/
+/* 메뉴 펼치기 */
 const showMenu = (toggleId, navbarId, bodyId) => {
     const toggle = document.getElementById(toggleId),
           navbar = document.getElementById(navbarId),
@@ -30,24 +30,15 @@ navbar.addEventListener('mouseleave', () => {
 /* 활성 링크 */
 const linkColor = document.querySelectorAll('.nav__link');
 function colorLink() {
+    // 모든 링크에서 active 클래스 제거
     linkColor.forEach(l => l.classList.remove('active'));
+    
+    // 클릭된 링크에 active 클래스 추가
     this.classList.add('active');
 }
 linkColor.forEach(l => l.addEventListener('click', colorLink));
 
-/* 메뉴 축소 */
-const linkCollapse = document.getElementsByClassName('collapse__link');
-for (let i = 0; i < linkCollapse.length; i++) {
-    linkCollapse[i].addEventListener('click', function() {
-        const collapseMenu = this.nextElementSibling;
-        collapseMenu.classList.toggle('showCollapse');
-
-        const rotate = collapseMenu.previousElementSibling;
-        rotate.classList.toggle('rotate');
-    });
-}
-
-// 로그아웃 핸들러
+/* 로그아웃 핸들러 */
 document.addEventListener('DOMContentLoaded', function() {
     const logoutBtn = document.getElementById('logout-btn');
     
@@ -63,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => {
                 if (response.ok) {
-
                     window.location.replace('/login');
                 } else {
                     console.error('로그아웃 실패');

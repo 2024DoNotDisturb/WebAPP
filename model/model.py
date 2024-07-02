@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine, Column, Integer, String, Date, DateTime, Enum, ForeignKey, Text, Boolean, TIMESTAMP
+from sqlalchemy import create_engine, Column, Integer, String, Date, LargeBinary, Enum, ForeignKey, Text, Boolean, TIMESTAMP
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import sessionmaker
 import flask_login
@@ -39,13 +39,13 @@ class UserProfiles(db.Model):
     __tablename__ = 'UserProfiles'
     UserProfileID = Column(Integer, primary_key=True, autoincrement=True)
     UserID = Column(Integer, ForeignKey('Users.UserID'), nullable=False)
-    ID = Column(String(255), nullable=False)  # 외래 키가 아닌 경우에도 nullable=False로 설정
-    Username = Column(String(255), nullable=False)  # 외래 키가 아닌 경우에도 nullable=False로 설정
+    ID = Column(String(255), nullable=False)
+    Username = Column(String(255), nullable=False)
     FirstName = Column(String(255))
     LastName = Column(String(255))
     Address = Column(String(255))
-    ProfilePicture = Column(String(255))
-
+    ProfilePicture = Column(LargeBinary)
+    
     # User와의 관계 설정
     user = relationship('User', back_populates='user_profile', foreign_keys=[UserID, ID, Username], lazy='joined', innerjoin=True)
 

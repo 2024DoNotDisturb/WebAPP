@@ -6,6 +6,13 @@ import bcrypt
 import ssl
 from model.model import User, UserProfiles, UserRoles, Roles, Permissions, db, Session
 from model.google import init_google_oauth
+import base64
+import os
+from werkzeug.utils import secure_filename
+
+# 파일 업로드 처리를 위한 설정
+UPLOAD_FOLDER = 'static/uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 # SSL 검증 비활성화
 if getattr(ssl, '_create_unverified_context', None):
@@ -214,16 +221,123 @@ def inject_flask_login():
     return dict(flask_login=flask_login)
 #-----------------------------------------------------------------------------------------------------------
 
+
+#-------------------------------------------------프로필 수정--------------------------------------------------
+@app.route('/save_profile_changes', methods=['POST'])
+def save_profile_changes():
+    # 클라이언트에서 전송된 데이터 가져오기
+    new_username = flask.request.form.get('newUsername')
+    new_email = flask.request.form.get('newEmail')
+    new_phone = flask.request.form.get('newPhone')
+    new_address = flask.request.form.get('newAddress')
+    new_status = flask.request.form.get('newStatus')
+
+    # 현재 로그인한 사용자 정보 가져오기
+    current_user = flask_login.current_user
+
+    # 데이터베이스 업데이트
+    try:
+        current_user.Username = new_username
+        current_user.Email = new_email
+        current_user.Phone = new_phone
+        current_user.user_profile[0].Address = new_address
+        current_user.Status = new_status
+
+        db.session.commit()
+        return flask.jsonify({'success': True, 'message': '프로필이 성공적으로 업데이트되었습니다.'})
+    except Exception as e:
+        db.session.rollback()
+        return flask.jsonify({'success': False, 'message': '프로필 업데이트에 실패했습니다: ' + str(e)})
+
+# 파일 업로드 허용 여부 확인 함수
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/upload_profile_picture', methods=['POST'])
+def upload_profile_picture():
+    # 클라이언트에서 전송된 파일 가져오기
+    if 'file' not in flask.request.files:
+        return flask.jsonify({'success': False, 'message': '파일이 전송되지 않았습니다.'})
+
+    file = flask.request.files['file']
+
+    # 파일 업로드 및 데이터베이스에 저장
+    if file and allowed_file(file.filename):
+        try:
+            # 파일 데이터 읽기
+            file_data = file.read()
+
+            # 사용자 프로필 사진 업데이트
+            current_user = flask_login.current_user
+            profile = current_user.user_profile[0]
+            profile.ProfilePicture = file_data
+
+            # 데이터베이스에 커밋
+            db.session.commit()
+
+            return flask.jsonify({
+                'success': True,
+                'message': '프로필 사진이 성공적으로 업로드되었습니다.'
+            })
+        except Exception as e:
+            db.session.rollback()
+            return flask.jsonify({
+                'success': False,
+                'message': '프로필 사진 업로드에 실패했습니다: ' + str(e)
+            })
+
+    return flask.jsonify({'success': False, 'message': '허용되지 않는 파일 형식입니다.'})
+
+@app.route('/update_title', methods=['POST'])
+def update_title():
+    try:
+        # 클라이언트에서 전송된 새로운 칭호 가져오기
+        new_firstname = flask.request.form.get('newFirstName')
+        new_lastname = flask.request.form.get('newLastName')
+
+        # 현재 로그인한 사용자 정보 가져오기
+        current_user = flask_login.current_user
+
+        # 데이터베이스 업데이트
+        current_user.user_profile[0].FirstName = new_firstname
+        current_user.user_profile[0].LastName = new_lastname
+        db.session.commit()
+
+        return flask.jsonify({'success': True, 'message': '칭호가 성공적으로 업데이트되었습니다.'})
+
+    except Exception as e:
+        db.session.rollback()
+        return flask.jsonify({'success': False, 'message': '칭호 업데이트에 실패했습니다: ' + str(e)})
+
+#-----------------------------------------------------------------------------------------------------------
+
+
+#-------------------------------------------------페이지 라우트------------------------------------------------
 @app.route('/')
 def home():
     if flask_login.current_user.is_authenticated:
-        return flask.render_template('home.html')
+        user_profile = flask_login.current_user.user_profile[0]
+        profile_picture = user_profile.ProfilePicture
+        encoded_profile_picture = None
+        if profile_picture:
+            encoded_profile_picture = base64.b64encode(profile_picture).decode('utf-8')
+            print(f"Encoded profile picture: {encoded_profile_picture[:30]}...")
+
+        return flask.render_template('home.html', encoded_profile_picture=encoded_profile_picture)
     else:
         return flask.redirect(flask.url_for('login'))
 
 @app.route('/account')
 def account():
-    return flask.render_template('account.html')
+    user_profile = flask_login.current_user.user_profile[0]
+    profile_picture = user_profile.ProfilePicture
+    encoded_profile_picture = None
+    if profile_picture:
+        encoded_profile_picture = base64.b64encode(profile_picture).decode('utf-8')
+        print('pic')
+
+    return flask.render_template('account.html', encoded_profile_picture=encoded_profile_picture)
+
 
 @app.route('/error')
 def error():
