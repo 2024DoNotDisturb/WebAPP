@@ -97,7 +97,7 @@ main {
 .large-button {
     grid-column: span 1;
     grid-row: span 2;
-    background-image: url(../src/mypage-btn.png);
+    background-image: url(../../src/mypage-btn.png);
     background-color: transparent;
     background-repeat: no-repeat;
     background-position: center center;
@@ -108,51 +108,51 @@ main {
 
 /* 마이페이지 버튼은 호버 시 확장이 없음 */
 .large-button:hover {
-    background-image: url(../src/mypage-btn-hover.png);
+    background-image: url(../../src/mypage-btn-hover.png);
 }
 
 /* 로봇 서비스 버튼 */
 .robot-btn {
-    background-image:url(../src/robot-btn.png);
+    background-image:url(../../src/robot-btn.png);
     animation: gentleShake 0.3s ease-in;
     animation-delay: 0.1s;
 }
 
 /* 스마트 루틴 서비스 버튼 */
 .routine-btn {
-    background-image: url(../src/routine-btn.png);
+    background-image: url(../../src/routine-btn.png);
     animation: gentleShake 0.3s ease-in;
     animation-delay: 0.2s;
 }
 
 /* 서비스 연결 대기 버튼 */
 .wait-btn {
-    background-image: url(../src/wait-btn.png);
+    background-image: url(../../src/wait-btn.png);
     animation: gentleShake 0.3s ease-in;
     animation-delay: 0.3s;
 }
 
 .wait-btn:hover {
-    background-image: url(../src/wait-btn-hover.png);
+    background-image: url(../../src/wait-btn-hover.png);
 }
 
 /* 팀 소개 페이지 버튼 */
 .teamintro-btn {
-    background-image: url(../src/teamintro-btn.png);
+    background-image: url(../../src/teamintro-btn.png);
     animation: gentleShake 0.3s ease-in;
     animation-delay: 0.4s;
 }
 
 /* 개발자 소개 페이지 버튼 */
 .developintro-btn {
-    background-image: url(../src/developintro-btn.png);
+    background-image: url(../../src/developintro-btn.png);
     animation: gentleShake 0.3s ease-in;
     animation-delay: 0.5s;
 }
 
 /* 서비스 소개 페이지 버튼 */
 .serviceintro-btn {
-    background-image: url(../src/serviceintro-btn.png);
+    background-image: url(../../src/serviceintro-btn.png);
     animation: gentleShake 0.3s ease-in;
     animation-delay: 0.6s;
 }

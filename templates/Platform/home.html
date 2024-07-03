@@ -5,7 +5,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Platform/home.css') }}">
 {% endblock %}
 
 <!-- 내용 추가 -->
@@ -20,7 +20,7 @@
                     {% if encoded_profile_picture %}
                     <img src="data:image/jpeg;base64,{{ encoded_profile_picture }}" alt="User Profile" class="profile-image">
                     {% else %}
-                    <img src="{{ url_for('static', filename='src/default-profile-img.png') }}" alt="Default Profile Image" class="profile-image">
+                    <img src="{{ url_for('static', filename='../src/default-profile-img.png') }}" alt="Default Profile Image" class="profile-image">
                     {% endif %}             
                 </div>
                 <p class="profile-name">{{ current_user.Username }}</p>
@@ -29,7 +29,7 @@
                     <span class="second-name">{{ current_user.user_profile[0].LastName }}</span>
                 </div>
         </div>
-        <a href="x"><button class="wait-btn"></button></a>
+        <a href="{{url_for('views.error')}}"><button class="wait-btn"></button></a>
         <a href="{{url_for('views.donotdisturb')}}"><button class="teamintro-btn"></button></a>
         <a href="{{url_for('views.introdeveloper')}}"><button class="developintro-btn"></button></a>
         <a href="{{url_for('views.introservice')}}"><button class="serviceintro-btn"></button></a>
@@ -38,5 +38,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+<script src="{{ url_for('static', filename='js/Platform/home.js') }}"></script>
 {% endblock %}

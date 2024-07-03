@@ -50,12 +50,12 @@
 
 <!-- 추가 CSS 예시 -->
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Platform/dashboard.css') }}">
 {% endblock %}
 
 <!-- 추가 JavaScript 예시 -->
 {% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+<script src="{{ url_for('static', filename='js/Platform/dashboard.js') }}"></script>
 {% endblock %}
