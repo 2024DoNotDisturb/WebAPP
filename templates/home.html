@@ -12,7 +12,7 @@
 {% block content %}
 <main>
     <div class="button-grid">
-        <button class="large-button"></button>
+        <button class="large-button" onclick="location.href='account' "></button>
         <button class="robot-btn"></button>
         <button class="routine-btn"></button>
         <div class="user-profile">
@@ -23,16 +23,16 @@
                     <img src="{{ url_for('static', filename='src/default-profile-img.png') }}" alt="Default Profile Image" class="profile-image">
                     {% endif %}             
                 </div>
-                <p class="profile-name">{{ flask_login.current_user.Username }}</p>
+                <p class="profile-name">{{ current_user.Username }}</p>
                 <div class="user-title-container">
-                    <span class="first-name">{{ flask_login.current_user.user_profile[0].FirstName}}</span>
-                    <span class="second-name">{{ flask_login.current_user.user_profile[0].LastName }}</span>
+                    <span class="first-name">{{ current_user.user_profile[0].FirstName}}</span>
+                    <span class="second-name">{{ current_user.user_profile[0].LastName }}</span>
                 </div>
         </div>
-        <a href="{{url_for('error')}}"><button class="wait-btn"></button></a>
-        <a href="{{url_for('donotdisturb')}}"><button class="teamintro-btn"></button></a>
-        <a href="{{url_for('introdeveloper')}}"><button class="developintro-btn"></button></a>
-        <a href="{{url_for('introservice')}}"><button class="serviceintro-btn"></button></a>
+        <a href="x"><button class="wait-btn"></button></a>
+        <a href="{{url_for('views.donotdisturb')}}"><button class="teamintro-btn"></button></a>
+        <a href="{{url_for('views.introdeveloper')}}"><button class="developintro-btn"></button></a>
+        <a href="{{url_for('views.introservice')}}"><button class="serviceintro-btn"></button></a>
     </div>
 </main>
 {% endblock %}

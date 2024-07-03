@@ -1,3 +1,5 @@
+<!-- sidebar.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,20 +15,30 @@
             <div>
                 <div class="nav__brand">
                     <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
-                    <a href="{{ url_for('home') }}" class="nav__logo">YouOwn</a>
+                    <a href="{{ url_for('views.home') }}" class="nav__logo">YouOwn</a>
                 </div>
                 <div class="nav__list">
-                    <a href="{{ url_for('home') }}" class="nav__link {% if request.path == url_for('home') %}active{% endif %}">
+                    {% if not current_user.is_admin() %}
+                    <a href="{{ url_for('views.home') }}" class="nav__link {% if request.path == url_for('views.home') %}active{% endif %}">
                         <ion-icon name="home-outline" class="nav__icon"></ion-icon>
                         <span class="nav_name">Home</span>
                     </a>
 
-                    <a href="{{ url_for('account') }}" class="nav__link {% if request.path == url_for('account') %}active{% endif %}">
+                    <a href="{{ url_for('views.account') }}" class="nav__link {% if request.path == url_for('views.account') %}active{% endif %}">
                         <ion-icon name="person-circle-outline" class="nav__icon"></ion-icon>
                         <span class="nav_name">Account</span>
                     </a>
+                    {% endif %}
+
+                    {% if current_user.is_admin() %}
+                    <a href="{{ url_for('views.dashboard_page') }}" class="nav__link {% if request.path == url_for('views.dashboard_page') %}active{% endif %}">
+                        <ion-icon name="bar-chart-outline" class="nav__icon"></ion-icon>
+                        <span class="nav_name">Dashboard</span>
+                    </a>
+                    {% endif %}
+
                 </div>
-                <a href="#" class="nav__link" id="logout-btn">
+                <a href="{{ url_for('auth.logout') }}" class="nav__link" id="logout-btn">
                     <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
                     <span class="nav_name">Log out</span>
                 </a>

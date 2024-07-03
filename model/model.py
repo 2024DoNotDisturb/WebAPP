@@ -27,12 +27,15 @@ class User(db.Model, flask_login.UserMixin):
     DateJoined = Column(TIMESTAMP, server_default=db.func.current_timestamp())
     LastLogin = Column(TIMESTAMP)
     Status = Column(Enum('active', 'inactive', 'banned', name='user_status'), default='active')
-
-    # User와 UserProfiles 간의 관계 설정
-    user_profile = relationship('UserProfiles', back_populates='user', primaryjoin="User.UserID == UserProfiles.UserID", lazy='joined')
-
+    
     def get_id(self):
-        return self.ID
+        return str(self.ID)
+    
+    def is_admin(self):
+        admin_role = UserRoles.query.filter_by(UserID=self.UserID, RoleID=1, PermissionID=1).first()
+        return admin_role is not None
+
+    user_profile = relationship('UserProfiles', back_populates='user', lazy='joined')
 
 # 유저 프로필 테이블
 class UserProfiles(db.Model):
@@ -45,9 +48,9 @@ class UserProfiles(db.Model):
     LastName = Column(String(255))
     Address = Column(String(255))
     ProfilePicture = Column(LargeBinary)
-    
-    # User와의 관계 설정
-    user = relationship('User', back_populates='user_profile', foreign_keys=[UserID, ID, Username], lazy='joined', innerjoin=True)
+
+    user = relationship('User', back_populates='user_profile')
+
 
 # AI 서비스 테이블
 class AIServices(db.Model):

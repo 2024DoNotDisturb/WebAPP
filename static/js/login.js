@@ -16,8 +16,8 @@ function fetchContent(url, elementId) {
 }
 
 openModal.addEventListener("click", () => {
-  fetchContent('/get_terms_of_use', 'termsOfUseContent');
-  fetchContent('/get_personal_information', 'personalInformationContent');
+  fetchContent('/auth/get_terms_of_use', 'termsOfUseContent');
+  fetchContent('/auth/get_personal_information', 'personalInformationContent');
   termsOfUseModal.style.display = "flex";
 });
 closemodal.addEventListener("click", () => {
@@ -28,6 +28,21 @@ submitmodal.addEventListener("click", () => {
   container.classList.add("right-panel-active");
 });
 signInBtn.addEventListener("click", () => {
+  document.querySelector('input[name="name"]').value = "";
+  document.querySelector('input[name="name"]').value = "";
+  document.querySelector('input[name="join_id"]').value = "";
+  document.querySelector('input[name="join_pwd"]').value = "";
+  document.querySelector('input[name="phone"]').value = "";
+  document.querySelector('input[name="email"]').value = "";
+  document.querySelector('input[name="birth"]').value = "";
+  document.querySelector('input[name="postcode"]').value = "";
+  document.querySelector('input[name="address"]').value = "";
+  document.querySelector('input[name="address2"]').value = "";
+
+  document.getElementById('idCheckIcon').textContent = '';
+  document.getElementById('idFeedback').textContent = '';
+  document.getElementById('pwdFeedback').textContent = '';
+
   container.classList.remove("right-panel-active");
 });
 openModal.addEventListener("click", () => {
@@ -125,7 +140,7 @@ document.getElementById('checkIdBtn').addEventListener('click', function() {
   const idCheckIcon = document.getElementById('idCheckIcon');
   const idFeedback = document.getElementById('idFeedback');
 
-  fetch(`/check_id?join_id=${joinId}`)
+  fetch(`/auth/check_id?join_id=${joinId}`)
     .then(response => response.json())
     .then(data => {
       if (data.exists) {

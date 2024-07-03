@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
         logoutBtn.addEventListener('click', function(event) {
             event.preventDefault();
 
-            fetch('/logout', {
+            fetch('/auth/logout', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => {
                 if (response.ok) {
-                    window.location.replace('/login');
+                    window.location.replace('/auth/login');
                 } else {
                     console.error('로그아웃 실패');
                 }

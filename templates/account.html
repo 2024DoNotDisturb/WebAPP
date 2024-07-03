@@ -17,18 +17,21 @@
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center position-relative">
                             <div class="profile-image-wrapper">
-                                <img src="{{ url_for('static', filename='src/default-profile-img.png') }}"
-                                    alt="Default Profile Image" class="rounded-circle" width="150">
+                                {% if encoded_profile_picture %}
+                                    <img src="data:image/jpeg;base64,{{ encoded_profile_picture }}" alt="User Profile" class="rounded-circle" width="150">
+                                {% else %}
+                                    <img src="{{ url_for('static', filename='src/default-profile-img.png') }}" alt="Default Profile Image" class="rounded-circle" width="150">
+                                {% endif %}  
                                 <!-- Edit 아이콘과 파일 업로드 input -->
                                 <label for="fileInput" class="material-symbols-outlined edit-icon">edit</label>
                                 <input type="file" id="fileInput" style="display: none;">
                                 <!-- Edit 아이콘과 파일 업로드 input 끝 -->
                             </div>
                             <div class="mt-3">
-                                <h4>{{ flask_login.current_user.Username }}</h4>
-                                <p class="text-secondary mb-1">{{ flask_login.current_user.user_profile[0].FirstName }}
-                                    {{ flask_login.current_user.user_profile[0].LastName }}</p>
-                                <p class="text-muted font-size-sm">{{ flask_login.current_user.Email }}</p>
+                                <h4>{{ current_user.Username }}</h4>
+                                <p class="text-secondary mb-1">{{ current_user.user_profile[0].FirstName }}
+                                    {{ current_user.user_profile[0].LastName }}</p>
+                                <p class="text-muted font-size-sm">{{ current_user.Email }}</p>
                             </div>
                         </div>
                     </div>
@@ -50,7 +53,7 @@
                                     <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1z" />
                                 </svg>칭호1
                             </h6>
-                            <span class="text-secondary">{{ flask_login.current_user.user_profile[0].FirstName }}</span>
+                            <span class="text-secondary">{{ current_user.user_profile[0].FirstName }}</span>
                         </li>
                         <!-- 칭호2 -->
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
@@ -63,7 +66,7 @@
                                     <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1z" />
                                 </svg>칭호2
                             </h6>
-                            <span class="text-secondary">{{ flask_login.current_user.user_profile[0].LastName }}</span>
+                            <span class="text-secondary">{{ current_user.user_profile[0].LastName }}</span>
                         </li>
                         <!-- 칭호 수정 버튼 -->
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
@@ -84,29 +87,50 @@
                                 <h6 class="mb-0">Name</h6>
                             </div>
                             <div class="col-sm-9 text_input">
-                                <span id="username">{{ flask_login.current_user.Username }}</span>
+                                <span id="username">{{ current_user.Username }}</span>
                                 <input type="text" id="edit-username" class="form-control d-none"
-                                    value="{{ flask_login.current_user.Username }}">
+                                    value="{{ current_user.Username }}">
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Password</h6>
+                                <h6 class="mb-0">Current Password</h6>
                             </div>
-                            <div class="col-sm-9 text_input">
-                                ********
+                            <div class="col-sm-6 text_input position-relative">
+                                <span id="password">********</span>
+                                <input type="password" id="edit-password" class="form-control d-none" value="">
+                                <div id="password-match-icon" class="text-white"></div>
+                            </div>
+                            <div class="col-sm-3">
+                                <button id="change-password-btn" class="btn btn-sm btn-secondary" disabled>비밀번호 변경</button>
+                                <button id="check-password-btn" class="btn d-none">일치 확인</button>
+                            </div>
+                        </div>                        
+                        
+                        
+                        <div class="row mt-3" id="change-password-section" style="display: none;">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">New Password</h6>
+                            </div>
+                            <div class="col-sm-6 text_input">
+                                <input type="password" id="new-password" class="form-control">
+                                <span class="pwdFeedbackNew"></span>
+                            </div>
+                            <div class="col-sm-3">
+                                <button id="cancel-password-btn" class="btn d-none">변경 취소</button>
                             </div>
                         </div>
                         <hr>
+                        
                         <div class="row">
                             <div class="col-sm-3">
                                 <h6 class="mb-0">Email</h6>
                             </div>
                             <div class="col-sm-9 text_input">
-                                <span id="email">{{ flask_login.current_user.Email }}</span>
+                                <span id="email">{{ current_user.Email }}</span>
                                 <input type="email" id="edit-email" class="form-control d-none"
-                                    value="{{ flask_login.current_user.Email }}">
+                                    value="{{ current_user.Email }}">
                             </div>
                         </div>
                         <hr>
@@ -115,9 +139,9 @@
                                 <h6 class="mb-0">Phone</h6>
                             </div>
                             <div class="col-sm-9 text_input">
-                                <span id="phone">{{ flask_login.current_user.Phone }}</span>
+                                <span id="phone">{{ current_user.Phone }}</span>
                                 <input type="tel" id="edit-phone" class="form-control d-none"
-                                    value="{{ flask_login.current_user.Phone }}">
+                                    value="{{ current_user.Phone }}">
                             </div>
                         </div>
                         <hr>
@@ -126,9 +150,9 @@
                                 <h6 class="mb-0">Address</h6>
                             </div>
                             <div class="col-sm-9 text_input">
-                                <span id="address">{{ flask_login.current_user.user_profile[0].Address }}</span>
+                                <span id="address">{{ current_user.user_profile[0].Address }}</span>
                                 <input type="text" id="edit-address" class="form-control d-none"
-                                    value="{{ flask_login.current_user.user_profile[0].Address }}">
+                                    value="{{ current_user.user_profile[0].Address }}">
                             </div>
                         </div>
                         <hr>
@@ -138,8 +162,8 @@
                             </div>
                             <div class="col-sm-9 text_input">
                                 <select name="status" id="edit-status" class="form-control" disabled>
-                                    <option value="active" {% if flask_login.current_user.Status=='active' %}selected{%endif %}>active</option>
-                                    <option value="inactive" {% if flask_login.current_user.Status=='inactive' %}selected{% endif %}>inactive</option>
+                                    <option value="active" {% if current_user.Status=='active' %}selected{%endif %}>active</option>
+                                    <option value="inactive" {% if current_user.Status=='inactive' %}selected{% endif %}>inactive</option>
                                 </select>
                             </div>
                         </div>
@@ -203,5 +227,6 @@
 {% block scripts %}
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 <script src="{{ url_for('static', filename='js/account.js') }}"></script>
 {% endblock %}

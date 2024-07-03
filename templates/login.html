@@ -11,11 +11,11 @@
 <div class="wrapper">
   <div class="container">
     <div class="sign-up-container">
-      <form method="POST" action="/register">
+      <form method="POST" action="/auth/register">
         <h1>Create Account</h1>
         <div class="social-links">
           <div>
-            <a hre="{{url_for('google_login')}}"><i class="fa fa-google" aria-hidden="true"></i></a>
+            <a hre="{{url_for('auth.google_login')}}"><i class="fa fa-google" aria-hidden="true"></i></a>
           </div>
         </div>
         <span>or use your email for registration</span>
@@ -42,11 +42,11 @@
       </form>
     </div>
     <div class="sign-in-container">
-      <form method="POST" action="/login">
+      <form method="POST" action="/auth/login">
         <h1>Sign In</h1>
         <div class="social-links">
           <div>
-            <a href="{{ url_for('google_login')}}"><i class="fa fa-google" aria-hidden="true"></i></a>
+            <a href="{{ url_for('auth.google_login')}}"><i class="fa fa-google" aria-hidden="true"></i></a>
           </div>
         </div>
         <span>or use your account</span>

@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    var pwdPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/;
+
     // 칭호 수정 버튼 클릭 시
     $('#edit-title-btn').click(function() {
         var $title1 = $('.list-group-item:nth-child(1) .text-secondary').text().trim();
@@ -29,12 +31,12 @@ $(document).ready(function() {
 
         $.ajax({
             method: 'POST',
-            url: '/update_title',
+            url: '/profile/update_first_lastname',
             data: {
                 newFirstName: new_firstname,
                 newLastName: new_lastname
             },
-            success: function(response) {
+            success: function(response) { 
                 alert('프로필이 성공적으로 업데이트되었습니다.');
                 window.location.reload();
                 
@@ -50,6 +52,7 @@ $(document).ready(function() {
 
     // 프로필 정보 수정 버튼 클릭 시
     $('#edit-profile-btn').click(function() {
+        $('#change-password-btn').removeAttr('disabled');
         $('#edit-profile-btn').addClass('d-none');
         $('#username').addClass('d-none');
         $('#edit-username').removeClass('d-none').val($('#username').text().trim());
@@ -69,34 +72,32 @@ $(document).ready(function() {
         var newPhone = $('#edit-phone').val();
         var newAddress = $('#edit-address').val();
         var newStatus = $('#edit-status').val();
+        var newPassword = $('#new-password').val();
+
+        if (newPassword && !pwdPattern.test(newPassword)) {
+            alert('비밀번호는 8-20자 이내, 문자, 숫자, 특수문자를 포함해야 합니다.');
+            return;
+        }
+        if (newPassword && !$('#password-match-icon').children('i').hasClass('bi-check2')) {
+            alert('현재 비밀번호 일치 확인을 해야합니다.');
+            return;
+        }
 
         // Ajax를 사용하여 서버로 데이터 전송 및 처리
         $.ajax({
             method: 'POST',
-            url: '/save_profile_changes',
+            url: '/profile/save_profile_changes',
             data: {
                 newUsername: newUsername,
                 newEmail: newEmail,
                 newPhone: newPhone,
                 newAddress: newAddress,
-                newStatus: newStatus
+                newStatus: newStatus,
+                newPassword: newPassword
             },
             success: function(response) {
                 alert('프로필이 성공적으로 업데이트되었습니다.');
                 window.location.reload();
-
-                // 입력 상태 초기화
-                // $('#edit-username').addClass('d-none');
-                // $('#edit-email').addClass('d-none');
-                // $('#edit-phone').addClass('d-none');
-                // $('#edit-address').addClass('d-none');
-                // $('#save-changes-btn').addClass('d-none');
-                // $('#username').removeClass('d-none');
-                // $('#email').removeClass('d-none');
-                // $('#phone').removeClass('d-none');
-                // $('#address').removeClass('d-none');
-                // $('#edit-status').prop('disabled', true);
-                // $('#edit-profile-btn').removeClass('d-none');
             },
             error: function(xhr, status, error) {
                 console.error(error);
@@ -112,7 +113,7 @@ $(document).ready(function() {
     
         // Ajax를 사용하여 파일 업로드
         $.ajax({
-            url: '/upload_profile_picture',
+            url: '/profile/upload_profile_picture',
             method: 'POST',
             data: formData,
             contentType: false,
@@ -130,5 +131,75 @@ $(document).ready(function() {
             }
         });
     });
+
+    // 비밀번호 변경 버튼 클릭 시
+    $('#change-password-btn').click(function() {
+        $('#password').addClass('d-none');
+        $('#edit-password').removeClass('d-none');
+        $('#change-password-btn').addClass('d-none');
+        $('#cancel-password-btn').removeClass('d-none');
+        $('#check-password-btn').removeClass('d-none');
+        $('#change-password-section').toggle(); // 비밀번호 변경 섹션을 보이거나 숨깁니다.
+    });
+    $('#check-password-btn').click(function() {
+        var Password = $('#edit-password').val();
+
+        // Ajax를 사용하여 서버로 비밀번호 일치 여부 확인 요청
+        $.ajax({
+            method: 'POST',
+            url: '/profile/check_password_match',
+            data: {
+                Password: Password
+            },
+            success: function(response) {
+                if (response.match) {
+                    $('#password-match-icon').html('<i class="bi bi-check2 text-success"></i>');
+                } else {
+                    $('#password-match-icon').html('<i class="bi bi-x text-danger"></i>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error checking password match:', error);
+                // 예외 처리: 오류 발생 시 메시지 출력 등
+            }
+        });
+    });
+
+    $('#cancel-password-btn').click(function() {
+        // 비밀번호 변경 입력 상자를 숨기고, 텍스트로 보여줍니다.
+        $('#edit-password').addClass('d-none');
+        $('#password').removeClass('d-none');
+    
+        // 기존의 비밀번호 변경 관련 버튼을 보이거나 숨깁니다.
+        $('#cancel-password-btn').addClass('d-none');
+        $('#check-password-btn').addClass('d-none');
+        $('#change-password-btn').removeClass('d-none');
+    
+        // 비밀번호 일치 아이콘을 초기화합니다.
+        $('#password-match-icon').html('');
+    
+        // 비밀번호 변경 섹션을 숨깁니다.
+        $('#change-password-section').toggle(); 
+        $('#edit-password').val('');
+        $('#new-password').val('');
+        var pwdFeedback = $('.pwdFeedbackNew'); 
+        pwdFeedback.text('');
+
+    });    
+
+    $('#new-password').on('input', function() {
+        var newPassword = $(this).val();
+        var pwdFeedback = $('.pwdFeedbackNew'); // 수정: 클래스 선택자 수정
+
+        var pwdPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/;
+
+        if (!pwdPattern.test(newPassword)) {
+            pwdFeedback.text('비밀번호는 8-20자 이내, 문자, 숫자, 특수문자를 포함해야 합니다.');
+            pwdFeedback.css('color', 'red');
+        } else {
+            pwdFeedback.text('');
+        }
+    });
+
 });
  
