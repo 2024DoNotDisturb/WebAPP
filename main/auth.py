@@ -26,7 +26,7 @@ def login():
         else:
             flash('Login failed. Please check your username and password.', 'error')
             return redirect(url_for('auth.login'))
-    return render_template('login.html')
+    return render_template('Platform/login.html')
 
 # 구글 로그인
 @auth.route("/google/login")

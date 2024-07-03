@@ -10,7 +10,13 @@ class Config:
         f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
     )
 
-    #mysql
+    # user = "root"
+    # password = "12345678"
+    # host = "127.0.0.1"
+    # port = "3306"
+    # database = "platform"
+
+    # #mysql
     # SQLALCHEMY_DATABASE_URI = (
     #     f"mysql://{user}:{password}@{host}:{port}/{database}"
     # )

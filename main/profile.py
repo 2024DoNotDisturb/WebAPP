@@ -28,6 +28,8 @@ def save_profile_changes():
 
         user = db.session.query(User).filter_by(ID=current_user.ID).first()
         if user:
+            if new_username:  
+                user.Username = new_username
             if new_password:  # 새로운 비밀번호가 전달된 경우에만 업데이트
                 user.Password = hashed_pwd
             if new_email:

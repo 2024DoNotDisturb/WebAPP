@@ -36,4 +36,4 @@ app.register_blueprint(profile, url_prefix='/profile')
 app.register_blueprint(dashboard, url_prefix='/dashboard')
 
 if __name__ == '__main__':
-    app.run(debug=app.config['DEBUG'])
+    app.run(debug=True)

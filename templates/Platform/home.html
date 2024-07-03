@@ -20,7 +20,7 @@
                     {% if encoded_profile_picture %}
                     <img src="data:image/jpeg;base64,{{ encoded_profile_picture }}" alt="User Profile" class="profile-image">
                     {% else %}
-                    <img src="{{ url_for('static', filename='../src/default-profile-img.png') }}" alt="Default Profile Image" class="profile-image">
+                    <img src="{{ url_for('static', filename='src/default-profile-img.png') }}" alt="Default Profile Image" class="profile-image">
                     {% endif %}             
                 </div>
                 <p class="profile-name">{{ current_user.Username }}</p>

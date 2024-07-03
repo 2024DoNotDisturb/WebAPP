@@ -3,20 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neumorphism Example</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Neumorphism Home Page</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/SmartRoutine/routine.css') }}">
-
 </head>
 <body>
-    <div class="container">
-        <h1 class="title">Neumorphism Style Example</h1>
-        <div class="card">
-            <div class="card-inner">
-                <p>This is a simple example of neumorphism style.</p>
-                <button class="btn">Click Me</button>
-            </div>
-        </div>
-    </div>
+    <header class="header">
+        <div class="logo">Logo</div>
+    </header>
+
+    <main class="container">
+        <section class="routine-table card">
+            <h2>Routine Table</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Activity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Monday</td>
+                        <td>Exercise</td>
+                    </tr>
+                    <tr>
+                        <td>Tuesday</td>
+                        <td>Study</td>
+                    </tr>
+                    <tr>
+                        <td>Wednesday</td>
+                        <td>Work</td>
+                    </tr>
+                    <tr>
+                        <td>Thursday</td>
+                        <td>Exercise</td>
+                    </tr>
+                    <tr>
+                        <td>Friday</td>
+                        <td>Relax</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="routine-settings card">
+            <h2>Routine Settings</h2>
+            <form>
+                <label for="routine-name">Routine Name:</label>
+                <input type="text" id="routine-name" name="routine-name"><br><br>
+                <label for="routine-time">Routine Time:</label>
+                <input type="time" id="routine-time" name="routine-time"><br><br>
+                <button type="submit">Save</button>
+            </form>
+        </section>
+
+        <section class="title-settings card">
+            <h2>Title Settings</h2>
+            <form>
+                <label for="title">Your Title:</label>
+                <input type="text" id="title" name="title"><br><br>
+                <button type="submit">Save</button>
+            </form>
+        </section>
+    </main>
 </body>
 </html>

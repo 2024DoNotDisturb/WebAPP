@@ -1,23 +1,36 @@
 body {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    height: 100vh;
+    justify-content: center;
+    min-height: 100vh; /* 최소 높이를 화면 전체 높이로 설정 */
     background-color: #f0f0f0;
     font-family: Arial, sans-serif;
+    margin: 0; /* body의 기본 마진 제거 */
+}
+
+.header {
+    width: 100%;
+    background-color: #f0f0f0;
+    padding: 20px;
+    box-shadow: 5px 5px 10px #bfbfbf,
+                -5px -5px 10px #ffffff;
+    position: fixed; /* 상단 고정 */
+    top: 0; /* 페이지 맨 위에 배치 */
+    text-align: center; /* 로고를 가운데 정렬하기 위해 텍스트 정렬 */
+    z-index: 1000; /* 다른 요소들 위에 배치 */
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .container {
-    background-color: #f0f0f0;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 10px 10px 20px #bfbfbf,
-                -10px -10px 20px #ffffff;
-}
-
-.title {
-    text-align: center;
-    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px; /* 로고가 가려지지 않도록 상단 여백 설정 */
 }
 
 .card {
@@ -29,13 +42,43 @@ body {
                 -5px -5px 10px #ffffff;
 }
 
-.card-inner {
+h2 {
     text-align: center;
+    margin-bottom: 10px;
 }
 
-.btn {
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    margin-bottom: 5px;
+}
+
+input[type="text"], input[type="time"] {
+    padding: 8px;
+    margin-bottom: 10px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+button {
     padding: 10px 20px;
-    margin-top: 10px;
     background-color: #f0f0f0;
     border: none;
     outline: none;
@@ -45,6 +88,6 @@ body {
                 inset -3px -3px 6px #ffffff;
 }
 
-.btn:hover {
+button:hover {
     background-color: #e0e0e0;
 }
