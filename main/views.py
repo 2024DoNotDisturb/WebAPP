@@ -13,7 +13,7 @@ def home():
         if profile_picture:
             encoded_profile_picture = base64.b64encode(profile_picture).decode('utf-8')
 
-        return render_template('home.html', encoded_profile_picture=encoded_profile_picture)
+        return render_template('Platform/home.html', encoded_profile_picture=encoded_profile_picture)
     else:
         return redirect(url_for('auth.login'))
 
@@ -26,26 +26,30 @@ def account():
         if profile_picture:
             encoded_profile_picture = base64.b64encode(profile_picture).decode('utf-8')
 
-        return render_template('account.html', encoded_profile_picture=encoded_profile_picture)
+        return render_template('Platform/account.html', encoded_profile_picture=encoded_profile_picture)
     else:
         return redirect(url_for('auth.login'))
 
 @views_bp.route('/error')
 def error():
-    return render_template('error.html')
+    return render_template('Platform/error.html')
 
 @views_bp.route('/donotdisturb')
 def donotdisturb():
-    return render_template('donotdisturb.html')
+    return render_template('Platform/donotdisturb.html')
 
 @views_bp.route('/introdeveloper')
 def introdeveloper():
-    return render_template('introdeveloper.html')
+    return render_template('Platform/introdeveloper.html')
 
 @views_bp.route('/introservice')
 def introservice():
-    return render_template('introservice.html')
+    return render_template('Platform/introservice.html')
 
 @views_bp.route('/Dashboard')
 def dashboard_page():
-    return render_template('dashboard.html')
+    return render_template('Platform/dashboard.html')
+
+@views_bp.route('/routine')
+def routine():
+    return render_template('SmartRoutine/routine.html')
