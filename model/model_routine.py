@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String, Text, Enum, ForeignKey, Boolean,
 from model.model_platform import db
 
 # 루틴 테이블
-class Routines(Base):
+class Routines(db.model):
     __tablename__ = 'Routines'
     RoutineID = Column(Integer, primary_key=True, autoincrement=True)
     RoutineName = Column(String(100), nullable=False)
@@ -11,7 +11,7 @@ class Routines(Base):
 
 
 # 루틴 스케줄 테이블
-class RoutineSchedules(Base):
+class RoutineSchedules(db.model):
     __tablename__ = 'RoutineSchedules'
 
     ScheduleID = Column(Integer, primary_key=True, autoincrement=True)
@@ -25,7 +25,7 @@ class RoutineSchedules(Base):
     AlarmText = Column(Text)
 
 # 스마트홈 디바이스 테이블
-class SmartDevices(Base):
+class SmartDevices(db.model):
     __tablename__ = 'SmartDevices'
 
     DeviceID = Column(Integer, primary_key=True, autoincrement=True)
@@ -36,7 +36,7 @@ class SmartDevices(Base):
     IsActive = Column(Boolean, default=False)
 
 # MQTT 토픽 테이블
-class MQTTTopics(Base):
+class MQTTTopics(db.model):
     __tablename__ = 'MQTTTopics'
 
     TopicID = Column(Integer, primary_key=True, autoincrement=True)
@@ -44,7 +44,7 @@ class MQTTTopics(Base):
     TopicName = Column(String(255), nullable=False)
 
 # 디바이스 데이터 테이블
-class DeviceData(Base):
+class DeviceData(db.model):
     __tablename__ = 'DeviceData'
 
     DataID = Column(Integer, primary_key=True, autoincrement=True)
@@ -54,7 +54,7 @@ class DeviceData(Base):
     Timestamp = Column(Time, default=func.now())
 
 # 루틴 액션 테이블
-class RoutineActions(Base):
+class RoutineActions(db.model):
     __tablename__ = 'RoutineActions'
 
     ActionID = Column(Integer, primary_key=True, autoincrement=True)
@@ -66,7 +66,7 @@ class RoutineActions(Base):
     ActionType = Column(Enum('TRUE', 'FALSE', 'WAIT'))
 
 # 알람 테이블
-class Alarms(Base):
+class Alarms(db.model):
     __tablename__ = 'Alarms'
 
     AlarmID = Column(Integer, primary_key=True, autoincrement=True)
@@ -77,17 +77,17 @@ class Alarms(Base):
 
 
 # 칭호 테이블
-class Title_firstname(Base):
+class Title_firstname(db.model):
     __tablename__ = 'Title_firstname'
 
     FirstName = Column(String(255), primary_key=True, unique=True)
 
-class Title_secondname(Base):
+class Title_secondname(db.model):
     __tablename__ = 'Title_secondname'
 
     SecondName = Column(String(255), primary_key=True, unique=True)
 
-class UserTitle(Base):
+class UserTitle(db.model):
     __tablename__ = 'UserTitle'
 
     UserID = Column(Integer, ForeignKey('platform.Users.UserID'), primary_key=True)
