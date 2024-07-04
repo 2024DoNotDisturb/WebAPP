@@ -3,7 +3,8 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh; /* 최소 높이를 화면 전체 높이로 설정 */
+    min-height: 800px;
+    min-width: 360px;
     background-color: #f0f0f0;
     font-family: Arial, sans-serif;
     margin: 0; /* body의 기본 마진 제거 */
