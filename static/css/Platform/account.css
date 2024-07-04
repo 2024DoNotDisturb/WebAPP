@@ -143,3 +143,8 @@ h6, small{
     right: 20px; /* 오른쪽 여백 */
     transform: translateY(-50%); /* 세로 중앙 정렬 */
 }
+
+#confirmGenerateBtn{
+    background-color: #f28b30 !important;
+    border-color: #f28b30;
+}

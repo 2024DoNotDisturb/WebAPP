@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, current_app
-from model.model import db, AIServices, UserServices, ServiceUsage, User
+from model.model_platform import db, AIServices, UserServices, ServiceUsage, User
 from sqlalchemy import func, case
 from datetime import datetime, timedelta
 

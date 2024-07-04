@@ -9,17 +9,10 @@ class Config:
     SQLALCHEMY_DATABASE_URI = (
         f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
     )
-
-    # user = "root"
-    # password = "12345678"
-    # host = "127.0.0.1"
-    # port = "3306"
-    # database = "platform"
-
-    # #mysql
-    # SQLALCHEMY_DATABASE_URI = (
-    #     f"mysql://{user}:{password}@{host}:{port}/{database}"
-    # )
+    # 서비스 DB 설정
+    SQLALCHEMY_BINDS = {
+    'service_db': f'mysql+pymysql://{user}:{password}@{host}:{port}/service_routine'
+    }
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = 'smartplatform'

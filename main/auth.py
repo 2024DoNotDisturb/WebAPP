@@ -2,7 +2,7 @@ from flask import Blueprint, request, redirect, url_for, render_template, flash,
 import flask_login
 import bcrypt
 import datetime
-from model.model import User, UserProfiles, UserRoles, Roles, Permissions, db, Session
+from model.model_platform import User, UserProfiles, UserRoles, Roles, Permissions, db, Session
 from model.google import init_google_oauth
 from config import Config
 

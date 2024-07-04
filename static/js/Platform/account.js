@@ -200,6 +200,19 @@ $(document).ready(function() {
             pwdFeedback.text('');
         }
     });
+    
+    $('#generate-image-btn').click(function() {
+        $('#generateImageModal').modal('show');
+    });
+
+    $('#confirmGenerateBtn').click(function() {
+        var prompt = $('#prompt').val();
+        var n_prompt = $('#n_prompt').val();
+
+        // 여기서 필요한 작업을 수행 (예: 이미지 처리 등)
+
+        $('#generateImageModal').modal('hide');
+    });
 
 });
  

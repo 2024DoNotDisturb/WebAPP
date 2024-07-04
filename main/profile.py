@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 import flask_login
 import bcrypt
-from model.model import User, db
+from model.model_platform import User, db
 
 profile = Blueprint('profile', __name__)
 

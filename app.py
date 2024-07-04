@@ -1,7 +1,8 @@
 from flask import Flask
 import flask_login
 import ssl
-from model.model import User, db, Session
+from model.model_platform import User, db as platform_db, Session
+from model.model_routine import db as routine_db 
 from config import Config
 from main.views import views_bp
 from main.auth import auth
@@ -16,7 +17,8 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 # 데이터베이스 초기화
-db.init_app(app)
+platform_db.init_app(app)
+routine_db.init_app(app)
 
 # 로그인 매니저 초기화
 login_manager = flask_login.LoginManager()
