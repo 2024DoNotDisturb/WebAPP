@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, redirect, url_for
-from flask_login import current_user
+from flask import Blueprint, jsonify, render_template, redirect, url_for
+from flask_login import current_user, login_required
 import base64
 
 views_bp = Blueprint('views', __name__)
@@ -51,5 +51,24 @@ def dashboard_page():
     return render_template('Platform/dashboard.html')
 
 @views_bp.route('/routine')
+def loading():
+    return render_template('SmartRoutine/loading.html')
+
+@views_bp.route('/routine-home')
+@login_required
 def routine():
     return render_template('SmartRoutine/routine.html')
+
+@views_bp.route('/check-login-status')
+def check_login_status():
+    if current_user.is_authenticated:
+        return jsonify({"isLoggedIn": True})
+    else:
+        return jsonify({"isLoggedIn": False})
+
+@views_bp.route('/redirect-to-webapp')
+def redirect_to_webapp():
+    if current_user.is_authenticated:
+        return redirect(url_for('views.routine'))  # 로그인된 경우 app으로 리다이렉트
+    else:
+        return redirect(url_for('auth.login'))  # 로그인되지 않은 경우 로그인 페이지로 리다이렉트

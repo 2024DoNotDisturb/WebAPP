@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 import flask_login
 import ssl
 from model.model_platform import User, Session, db
@@ -7,6 +7,8 @@ from main.views import views_bp
 from main.auth import auth
 from main.profile import profile
 from main.dashboard import dashboard
+
+
 
 # SSL 검증 비활성화
 if getattr(ssl, '_create_unverified_context', None):

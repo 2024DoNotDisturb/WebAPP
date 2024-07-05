@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Platform Login</title>
+  <title>유온 로그인</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/Platform/login.css') }}">
 </head>
@@ -12,13 +12,13 @@
   <div class="container">
     <div class="sign-up-container">
       <form method="POST" action="/auth/register">
-        <h1>Create Account</h1>
+        <h1>계정 만들기</h1>
         <div class="social-links">
           <div>
             <a hre="{{url_for('auth.google_login')}}"><i class="fa fa-google" aria-hidden="true"></i></a>
           </div>
         </div>
-        <span>or use your email for registration</span>
+        <span>직접 입력하거나 구글 계정으로 빠르게 가입하세요!</span>
         <input type="text" name="name" placeholder="Name">
         <div class="input-container">
           <input type="text" name="join_id" id="join_id" placeholder="ID(특수문자 X, 6자 이상)" style="width: 100%;">
@@ -38,33 +38,40 @@
         <input type="text" name="address" id="sample6_address" ≈ placeholder="주소">
         <input type="text" name="address2" id="sample6_detailAddress" placeholder="상세주소">
         <input type="text" name="address3" id="sample6_extraAddress" disabled placeholder="참고항목">
-        <button class="form_btn">Sign Up</button>
+        <button class="form_btn">회원가입</button>
       </form>
     </div>
     <div class="sign-in-container">
       <form method="POST" action="/auth/login">
-        <h1>Sign In</h1>
+        <h1>로그인</h1>
         <div class="social-links">
           <div>
             <a href="{{ url_for('auth.google_login')}}"><i class="fa fa-google" aria-hidden="true"></i></a>
           </div>
         </div>
-        <span>or use your account</span>
+        <span>로그인하거나 구글 계정으로 빠르게 로그인하세요!</span>
         <input type="text" placeholder="ID" name="id" />
         <input type="password" placeholder="Password" name="password" />
-        <button class="form_btn">Sign In</button>
+        <button class="form_btn">로그인</button>
       </form>
     </div>
     <div class="overlay-container">
       <div class="overlay-left">
-        <h1>Welcome!</h1>
-        <p>To keep connected with us please login with your personal info</p>
-        <button id="signIn" class="overlay_btn">Sign In</button>
+        <h1>처음 오셨나요?</h1>
+        <p>
+          회원가입하고, <br>
+          유온과 함께해요! <br>
+          유온을 당신을 기다리고 있어요.
+        </p>
+        <button id="signIn" class="overlay_btn">계정이 있어요</button>
       </div>
       <div class="overlay-right">
-        <h1>Hello, Friend</h1>
-        <p>Enter your personal details and start journey with us</p>
-        <button id="signUp" class="btn-open-modal">Sign Up</button>
+        <h1>어서오세요!</h1>
+        <p>
+          유온의 도움이 필요하신가요? <br>
+          어서 유온에 접속하세요!
+        </p>
+        <button id="signUp" class="btn-open-modal">계정이 없어요</button>
         <!-- <button id="signUp" class="overlay_btn">Sign Up</button> -->
       </div>
     </div>
