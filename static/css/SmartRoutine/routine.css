@@ -1,0 +1,219 @@
+:root {
+    --background: #131419;
+    --container: #f2f2f2;
+    --list: #fff;
+    --text: #131419;
+    --accent1: #FAFFAF;
+    --accent2: #96C9F4;
+    --accent3: #3FA2F6;
+    --accent4: #0F67B1;
+}
+
+@font-face {
+    font-family: 'EF_jejudoldam';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-EF@1.0/EF_jejudoldam.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'ef_chuckchuck';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-01@1.0/ef_chuckchuck.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'EF_jejudoldam';
+    background-color: var(--background);
+    color: var(--text);
+    text-align: center;
+}
+
+.container {
+    width: 100%;
+    background-color: var(--container);
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h2 {
+    color: var(--accent4);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.day-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.day-button {
+    flex: 0 0 auto; /* 크기를 고정합니다 */
+    width: 40px; /* 너비와 높이를 같게 설정하여 정사각형으로 만듭니다 */
+    height: 40px;
+    padding: 0; /* 패딩을 제거합니다 */
+    margin: 0 2px;
+    background-color: var(--container);
+    color: var(--text);
+    border: none;
+    border-radius: 50%; /* 50%로 설정하여 원형으로 만듭니다 */
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'ef_chuckchuck';
+    font-size: 14px; /* 글자 크기를 조정합니다 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.day-button:hover {
+    background-color: var(--accent3);
+    color: #fff;
+}
+
+.day-button.active {
+    background-color: var(--accent4);
+    color: var(--container);
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+
+.button {
+    position: relative;
+    width: 150px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    border: 1px solid var(--accent2);
+    background-color: var(--accent2);
+    transition: all 0.3s;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.button .buttontext {
+    color: #fff;
+    font-weight: 600;
+    font-family: 'ef_chuckchuck';
+}
+
+.button .buttonicon {
+    position: absolute;
+    right: 0px;
+    height: 100%;
+    width: 40px;
+    background-color: var(--accent3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    transition: all 0.3s;
+}
+
+.button .svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--accent2);
+}
+
+.button:hover {
+    background-color: var(--accent2);
+}
+
+.button:hover .buttontext {
+    color: transparent;
+}
+
+.button:hover .buttonicon {
+    width: 148px;
+    right: 0;
+}
+
+.button:active {
+    border: 1px solid var(--accent3);
+}
+
+.button:active .buttonicon {
+    background-color: var(--accent3);
+}
+
+#routine-list,
+#title-list {
+    min-height: 200px;
+    max-height: 300px;
+    height: 300px;
+    width: 90%;
+    overflow-y: auto;
+    background-color: var(--list);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+#routine-list:empty, #title-list:empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--container);
+}
+
+#routine-list:empty::after {
+    content: "오늘의 루틴이 없습니다.";
+}
+
+#title-list:empty::after {
+    content: "획득한 칭호가 없습니다.";
+}
+
+.routine-section,
+.title-section {
+    margin-bottom: 15px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: var(--accent1);
+    border-radius: 10px;
+    color: var(--text);
+    transition: background-color 0.3s ease;
+}
+
+li:hover {
+    background-color: var(--accent2);
+}
+
+body::-webkit-scrollbar, #routine-list::-webkit-scrollbar, #title-list::-webkit-scrollbar { /* 스크롤바 없애기 */
+    display: none;  /* WebKit */
+}

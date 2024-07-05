@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>해방하러 이동 중</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/SmartRoutine/loading.css') }}">
+</head>
+<body>
+    <div class="loader-container">
+        <div class="wrapper">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="shadow"></div>
+            <div class="shadow"></div>
+            <div class="shadow"></div>
+        </div>
+        <p id="randomMessage" class="message"></p>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/SmartRoutine/loading.js') }}"></script>
+</body>
+</html>

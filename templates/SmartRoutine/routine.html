@@ -1,0 +1,48 @@
+{% extends 'layouts/layout_routine.html' %}
+
+{% block title %}해방 Do it{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/SmartRoutine/routine.css') }}">
+{% endblock %}
+
+{% block content %}
+<main class="container">
+    <h2>오늘의 루틴</h2>
+    <div class="day-buttons">
+        <button class="day-button">일</button>
+        <button class="day-button">월</button>
+        <button class="day-button">화</button>
+        <button class="day-button">수</button>
+        <button class="day-button">목</button>
+        <button class="day-button">금</button>
+        <button class="day-button">토</button>
+    </div>
+    <section class="routine-section">
+        <ul id="routine-list">
+            <!-- RoutineActions의 starttime, routinename, actiontype 나열 : 필터 - Date가 오늘 날짜 -->
+        </ul>
+        <div class="button-container">
+            <button type="button" class="button">
+                <span class="buttontext">루틴 추가 &nbsp;&nbsp;&nbsp;</span>
+                <span class="buttonicon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" fill="none" class="svg">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </span>
+            </button>
+        </div>
+    </section>
+
+    <section class="title-section">
+        <h2>칭호 리스트</h2>
+        <ul id="title-list">
+            <!-- Title items will be dynamically added here -->
+        </ul>
+    </section>
+</main> 
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/routine.js') }}"></script>
+{% endblock %}
