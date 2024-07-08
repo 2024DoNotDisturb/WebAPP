@@ -64,7 +64,7 @@ class UserServices(db.Model):
     UserID = Column(Integer, ForeignKey('Users.UserID'), nullable=False)
     ServiceID = Column(Integer, ForeignKey('AIServices.ServiceID'), nullable=False)
     SubscriptionDate = Column(TIMESTAMP, server_default=db.func.current_timestamp())
-    Status = Column(Enum('active', 'inactive', 'canceled', name='subscription_status'), default='active')
+    Status = Column(Enum('active', 'inactive', 'canceled', name='subscription_status'), default='inactive')
 
 # 서비스 사용 테이블
 class ServiceUsage(db.Model):

@@ -2,7 +2,7 @@ from flask import Blueprint, request, redirect, url_for, render_template, flash,
 import flask_login
 import bcrypt
 import datetime
-from model.model_platform import User, UserProfiles, UserRoles, Roles, Permissions, db, Session
+from model.model_platform import User, UserProfiles, UserServices, UserRoles, Roles, Permissions, db, Session
 from model.google import init_google_oauth
 from config import Config
 
@@ -146,6 +146,20 @@ def register():
 
     default_role = session_db.query(Roles).filter_by(RoleName='Basic User').first()
     default_permission = session_db.query(Permissions).filter_by(PermissionName='User').first()
+
+    def new_user_service(user_id, service_id):
+        add_subscription = UserServices(
+            UserID=user_id,
+            ServiceID=service_id,
+            Status='inactive'  # 모든 서비스를 비활성화 상태로 설정
+        )
+        db.session.add(add_subscription)
+
+    user_id = new_user.UserID
+    for service_id in range(1, 4):  # 1부터 3까지의 서비스 ID에 대해 반복
+        new_user_service(user_id, service_id)
+
+    db.session.commit()
 
     new_user_role = UserRoles(
         UserID=new_user.UserID,
