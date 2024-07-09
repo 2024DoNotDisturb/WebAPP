@@ -4,6 +4,7 @@ from model.model_platform import db
 
 # 루틴 테이블
 class Routines(db.Model):
+    __bind_key__ = 'service_db'
     __tablename__ = 'Routines'
     RoutineID = Column(Integer, primary_key=True, autoincrement=True)
     RoutineName = Column(String(100), nullable=False)
@@ -12,6 +13,7 @@ class Routines(db.Model):
 
 # 루틴 스케줄 테이블
 class RoutineSchedules(db.Model):
+    __bind_key__ = 'service_db'
     __tablename__ = 'RoutineSchedules'
 
     ScheduleID = Column(Integer, primary_key=True, autoincrement=True)
@@ -26,6 +28,7 @@ class RoutineSchedules(db.Model):
 
 # 스마트홈 디바이스 테이블
 class SmartDevices(db.Model):
+    __bind_key__ = 'service_db'
     __tablename__ = 'SmartDevices'
 
     DeviceID = Column(Integer, primary_key=True, autoincrement=True)
@@ -37,6 +40,7 @@ class SmartDevices(db.Model):
 
 # MQTT 토픽 테이블
 class MQTTTopics(db.Model):
+    __bind_key__ = 'service_db'
     __tablename__ = 'MQTTTopics'
 
     TopicID = Column(Integer, primary_key=True, autoincrement=True)
@@ -45,6 +49,7 @@ class MQTTTopics(db.Model):
 
 # 디바이스 데이터 테이블
 class DeviceData(db.Model):
+    __bind_key__ = 'service_db'
     __tablename__ = 'DeviceData'
 
     DataID = Column(Integer, primary_key=True, autoincrement=True)
@@ -55,6 +60,7 @@ class DeviceData(db.Model):
 
 # 루틴 액션 테이블
 class RoutineActions(db.Model):
+    __bind_key__ = 'service_db'
     __tablename__ = 'RoutineActions'
 
     ActionID = Column(Integer, primary_key=True, autoincrement=True)
@@ -68,6 +74,7 @@ class RoutineActions(db.Model):
 
 # 알람 테이블
 class Alarms(db.Model):
+    __bind_key__ = 'service_db'
     __tablename__ = 'Alarms'
 
     AlarmID = Column(Integer, primary_key=True, autoincrement=True)
@@ -79,16 +86,19 @@ class Alarms(db.Model):
 
 # 칭호 테이블
 class Title_firstname(db.Model):
+    __bind_key__ = 'service_db'
     __tablename__ = 'Title_firstname'
 
     FirstName = Column(String(255), primary_key=True, unique=True)
 
 class Title_secondname(db.Model):
+    __bind_key__ = 'service_db'
     __tablename__ = 'Title_secondname'
 
     SecondName = Column(String(255), primary_key=True, unique=True)
 
 class UserTitle(db.Model):
+    __bind_key__ = 'service_db'
     __tablename__ = 'UserTitle'
 
     UserID = Column(Integer, ForeignKey('platform.Users.UserID'), primary_key=True)

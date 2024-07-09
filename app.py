@@ -7,6 +7,7 @@ from main.views import views_bp
 from main.auth import auth
 from main.profile import profile
 from main.dashboard import dashboard
+from main.routine_home import routine
 
 
 # SSL 검증 비활성화
@@ -41,6 +42,7 @@ app.register_blueprint(views_bp)
 app.register_blueprint(auth, url_prefix='/auth')
 app.register_blueprint(profile, url_prefix='/profile')
 app.register_blueprint(dashboard, url_prefix='/dashboard')
+app.register_blueprint(routine, url_prefix='/routine')
 
 if __name__ == '__main__':
     app.run(debug=True)
