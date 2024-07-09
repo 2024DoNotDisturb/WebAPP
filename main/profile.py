@@ -1,7 +1,8 @@
 from flask import Blueprint, request, jsonify
 import flask_login
 import bcrypt
-from model.model_platform import User, db
+from model.model_platform import User, db, UserProfiles
+from model.model_routine import UserEquippedTitle, Title
 
 profile = Blueprint('profile', __name__)
 
@@ -82,23 +83,21 @@ def upload_profile_picture():
 
 # 칭호 업데이트
 @profile.route('/update_first_lastname', methods=['POST'])
-def update_first_lastname():
-    try:
-        new_firstname = request.form.get('newFirstName')
-        new_lastname = request.form.get('newLastName')
-
-        current_user = flask_login.current_user
-        user = db.session.query(User).filter_by(ID=current_user.ID).first()
-        if user:
-            user_profile = user.user_profile[0]
-            if user_profile:
-                user_profile.FirstName = new_firstname
-                user_profile.LastName = new_lastname
-        db.session.commit()
-        return jsonify({'success': True, 'message': '칭호가 성공적으로 업데이트되었습니다.'})
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'success': False, 'message': '칭호 업데이트에 실패했습니다: ' + str(e)})
+def update_user_profile_title(user_id):
+    # 서비스 DB에서 사용자의 착용 칭호 정보 가져오기
+    equipped_title = db.query(UserEquippedTitle).filter_by(UserID=user_id).first()
+    
+    if equipped_title:
+        first_title = db.query(Title).get(equipped_title.EquippedFirstTitleID)
+        second_title = db.query(Title).get(equipped_title.EquippedSecondTitleID)
+        
+        # 프로필 DB에서 사용자 프로필 업데이트
+        user_profile = db.query(UserProfiles).filter_by(UserID=user_id).first()
+        
+        if user_profile:
+            full_title = f"{first_title.Name if first_title else ''} {user_profile.Username} {second_title.Name if second_title else ''}"
+            user_profile.Username = full_title.strip()
+            db.commit()
 
 # 비밀번호 수정시 현재 비밀번호 일치 확인
 @profile.route('/check_password_match', methods=['POST'])

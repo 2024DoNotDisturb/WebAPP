@@ -50,3 +50,5 @@ def convert_day_of_week(day_of_week):
         return ['월요일', '화요일', '수요일', '목요일', '금요일']
     else:
         return [day_of_week[0]]
+    
+

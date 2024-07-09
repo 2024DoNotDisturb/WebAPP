@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String, Text, Enum, ForeignKey, Boolean, Time, TIMESTAMP, Float, func
+from sqlalchemy import Column, Integer, String, Text, Enum, ForeignKey, Boolean, Time, TIMESTAMP, Float, DateTime, func
 from model.model_platform import db
+from sqlalchemy.orm import relationship
 
 # 루틴 테이블
 class Routines(db.Model):
@@ -85,22 +86,35 @@ class Alarms(db.Model):
 
 
 # 칭호 테이블
-class Title_firstname(db.Model):
+class Title(db.Model):
     __bind_key__ = 'service_db'
-    __tablename__ = 'Title_firstname'
+    __tablename__ = 'Title'
 
-    FirstName = Column(String(255), primary_key=True, unique=True)
+    TitleID = Column(Integer, primary_key=True, autoincrement=True)
+    Name = Column(String(255), unique=True, nullable=False)
+    Type = Column(Enum('First', 'Second'), nullable=False)  # 'First' for 앞, 'Second' for 뒤
+    HiddenMission = Column(String(255), nullable=True)  # 히든 미션 설명
 
-class Title_secondname(db.Model):
+# 칭호 해제 테이블
+class UserTitleStatus(db.Model):
     __bind_key__ = 'service_db'
-    __tablename__ = 'Title_secondname'
-
-    SecondName = Column(String(255), primary_key=True, unique=True)
-
-class UserTitle(db.Model):
-    __bind_key__ = 'service_db'
-    __tablename__ = 'UserTitle'
+    __tablename__ = 'UserTitleStatus'
 
     UserID = Column(Integer, ForeignKey('platform.Users.UserID'), primary_key=True)
-    FirstName = Column(String(255), ForeignKey('Title_firstname.FirstName'))
-    SecondName = Column(String(255), ForeignKey('Title_secondname.SecondName'))
+    TitleID = Column(Integer, ForeignKey('Title.TitleID'), primary_key=True)
+    Unlocked = Column(Boolean, default=False)  # 칭호 해제 여부
+    UnlockedDate = Column(DateTime, nullable=True)  # 칭호 해제 날짜
+
+# 사용자 칭호 착용 상태 테이블
+class UserEquippedTitle(db.Model):
+    __bind_key__ = 'service_db'
+    __tablename__ = 'UserEquippedTitle'
+
+    UserID = Column(Integer, ForeignKey('platform.Users.UserID'), primary_key=True)
+    EquippedFirstTitleID = Column(Integer, ForeignKey('Title.TitleID'), nullable=True)  # 앞 칭호
+    EquippedSecondTitleID = Column(Integer, ForeignKey('Title.TitleID'), nullable=True)  # 뒤 칭호
+
+    # 관계 설정
+    first_title = relationship('Title', foreign_keys=[EquippedFirstTitleID])
+    second_title = relationship('Title', foreign_keys=[EquippedSecondTitleID])
+
