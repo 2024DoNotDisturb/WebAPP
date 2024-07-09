@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, render_template, redirect, url_for
+from flask import Blueprint, jsonify, render_template, redirect, url_for, request
 from flask_login import current_user, login_required
 import base64
 
@@ -54,17 +54,18 @@ def dashboard_page():
 def loading():
     return render_template('SmartRoutine/loading.html')
 
-@views_bp.route('/routine-home')
-@login_required
-def routine():
-    return render_template('SmartRoutine/routine.html')
-
-@views_bp.route('/check-login-status')
+@views_bp.route('/check-login-status') # 로딩 페이지 - 로그인 확인
 def check_login_status():
     if current_user.is_authenticated:
         return jsonify({"isLoggedIn": True})
     else:
         return jsonify({"isLoggedIn": False})
+
+@views_bp.route('/routine-home')
+@login_required
+def routine():
+    return render_template('SmartRoutine/routine.html')
+
 
 @views_bp.route('/redirect-to-webapp')
 def redirect_to_webapp():

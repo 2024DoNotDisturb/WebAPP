@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import flask_login
 import ssl
 from model.model_platform import User, Session, db
@@ -7,7 +7,6 @@ from main.views import views_bp
 from main.auth import auth
 from main.profile import profile
 from main.dashboard import dashboard
-
 
 
 # SSL 검증 비활성화
@@ -30,6 +29,12 @@ def load_user(id):
     user = session_db.query(User).filter_by(ID=id).first()
     session_db.close()
     return user
+
+@app.errorhandler(404)
+def not_found_error(error):
+    print(f"404 error: {error}, Path: {request.path}")
+    return jsonify({"error": "Not found", "path": request.path}), 404
+
 
 # 블루프린트 등록
 app.register_blueprint(views_bp)

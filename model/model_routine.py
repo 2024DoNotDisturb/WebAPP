@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String, Text, Enum, ForeignKey, Boolean,
 from model.model_platform import db
 
 # 루틴 테이블
-class Routines(db.model):
+class Routines(db.Model):
     __tablename__ = 'Routines'
     RoutineID = Column(Integer, primary_key=True, autoincrement=True)
     RoutineName = Column(String(100), nullable=False)
@@ -11,7 +11,7 @@ class Routines(db.model):
 
 
 # 루틴 스케줄 테이블
-class RoutineSchedules(db.model):
+class RoutineSchedules(db.Model):
     __tablename__ = 'RoutineSchedules'
 
     ScheduleID = Column(Integer, primary_key=True, autoincrement=True)
@@ -25,7 +25,7 @@ class RoutineSchedules(db.model):
     AlarmText = Column(Text)
 
 # 스마트홈 디바이스 테이블
-class SmartDevices(db.model):
+class SmartDevices(db.Model):
     __tablename__ = 'SmartDevices'
 
     DeviceID = Column(Integer, primary_key=True, autoincrement=True)
@@ -36,7 +36,7 @@ class SmartDevices(db.model):
     IsActive = Column(Boolean, default=False)
 
 # MQTT 토픽 테이블
-class MQTTTopics(db.model):
+class MQTTTopics(db.Model):
     __tablename__ = 'MQTTTopics'
 
     TopicID = Column(Integer, primary_key=True, autoincrement=True)
@@ -44,7 +44,7 @@ class MQTTTopics(db.model):
     TopicName = Column(String(255), nullable=False)
 
 # 디바이스 데이터 테이블
-class DeviceData(db.model):
+class DeviceData(db.Model):
     __tablename__ = 'DeviceData'
 
     DataID = Column(Integer, primary_key=True, autoincrement=True)
@@ -54,7 +54,7 @@ class DeviceData(db.model):
     Timestamp = Column(Time, default=func.now())
 
 # 루틴 액션 테이블
-class RoutineActions(db.model):
+class RoutineActions(db.Model):
     __tablename__ = 'RoutineActions'
 
     ActionID = Column(Integer, primary_key=True, autoincrement=True)
@@ -64,9 +64,10 @@ class RoutineActions(db.model):
     StartTime = Column(Time, ForeignKey('RoutineSchedules.StartTime'))
     RoutineName = Column(String(100), ForeignKey('Routines.RoutineName'), nullable=False)
     ActionType = Column(Enum('TRUE', 'FALSE', 'WAIT'))
+    UserID = Column(Integer, ForeignKey('platform.Users.UserID'))
 
 # 알람 테이블
-class Alarms(db.model):
+class Alarms(db.Model):
     __tablename__ = 'Alarms'
 
     AlarmID = Column(Integer, primary_key=True, autoincrement=True)
@@ -77,17 +78,17 @@ class Alarms(db.model):
 
 
 # 칭호 테이블
-class Title_firstname(db.model):
+class Title_firstname(db.Model):
     __tablename__ = 'Title_firstname'
 
     FirstName = Column(String(255), primary_key=True, unique=True)
 
-class Title_secondname(db.model):
+class Title_secondname(db.Model):
     __tablename__ = 'Title_secondname'
 
     SecondName = Column(String(255), primary_key=True, unique=True)
 
-class UserTitle(db.model):
+class UserTitle(db.Model):
     __tablename__ = 'UserTitle'
 
     UserID = Column(Integer, ForeignKey('platform.Users.UserID'), primary_key=True)

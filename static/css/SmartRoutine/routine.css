@@ -56,19 +56,19 @@ h2 {
 }
 
 .day-button {
-    flex: 0 0 auto; /* 크기를 고정합니다 */
-    width: 40px; /* 너비와 높이를 같게 설정하여 정사각형으로 만듭니다 */
+    flex: 0 0 auto;
+    width: 40px;
     height: 40px;
-    padding: 0; /* 패딩을 제거합니다 */
+    padding: 0;
     margin: 0 2px;
     background-color: var(--container);
     color: var(--text);
     border: none;
-    border-radius: 50%; /* 50%로 설정하여 원형으로 만듭니다 */
+    border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
     font-family: 'ef_chuckchuck';
-    font-size: 14px; /* 글자 크기를 조정합니다 */
+    font-size: 14px; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -80,6 +80,11 @@ h2 {
 }
 
 .day-button.active {
+    background-color: var(--accent3);
+    color: var(--container);
+}
+
+.day-button.selected {
     background-color: var(--accent4);
     color: var(--container);
 }
@@ -88,6 +93,23 @@ ul {
     list-style-type: none;
     padding: 0;
 }
+
+#routine-list li {
+    list-style-type: none; /* 기본 불릿 제거 */
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: #fff; /* 배경색 설정 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    font-size: 16px; /* 글자 크기 */
+    color: #333; /* 글자 색상 */
+}
+
+#no-routine-message {
+    color: var(--accent4); /* 메시지 색상 */
+    font-family: 'EF_jejudoldam'; /* 기울임꼴 */
+    font-size: 15px;
+}
+
 
 
 .button {

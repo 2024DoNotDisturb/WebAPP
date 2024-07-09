@@ -20,6 +20,7 @@
     <section class="routine-section">
         <ul id="routine-list">
             <!-- RoutineActions의 starttime, routinename, actiontype 나열 : 필터 - Date가 오늘 날짜 -->
+                <li id="no-routine-message">루틴을 설정하세요!</li>
         </ul>
         <div class="button-container">
             <button type="button" class="button">
@@ -44,5 +45,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/routine.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/SmartRoutine/routine.js') }}"></script>
 {% endblock %}
