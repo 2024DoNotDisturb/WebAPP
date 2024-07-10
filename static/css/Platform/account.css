@@ -74,6 +74,10 @@ li{
     color: #555;
 }
 
+.edit-title-btn[disabled] {
+    color: #555;
+}
+
 .profile-image-wrapper {
     position: relative;
     display: inline-block;
@@ -147,4 +151,8 @@ h6, small{
 #confirmGenerateBtn{
     background-color: #f28b30 !important;
     border-color: #f28b30;
+}
+
+.generate-descrription{
+    font-size: 0.8rem;
 }

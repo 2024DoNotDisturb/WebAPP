@@ -1,8 +1,7 @@
 from flask import Blueprint, request, jsonify
 import flask_login
 import bcrypt
-from model.model_platform import User, db, UserProfiles
-from model.model_routine import UserEquippedTitle, Title
+from model.model_platform import User, db
 
 profile = Blueprint('profile', __name__)
 
@@ -80,24 +79,6 @@ def upload_profile_picture():
         return jsonify({'success': False, 'message': '프로필 사진 업로드에 실패했습니다: ' + str(e)})
 
     return jsonify({'success': False, 'message': '허용되지 않는 파일 형식입니다.'})
-
-# 칭호 업데이트
-@profile.route('/update_first_lastname', methods=['POST'])
-def update_user_profile_title(user_id):
-    # 서비스 DB에서 사용자의 착용 칭호 정보 가져오기
-    equipped_title = db.query(UserEquippedTitle).filter_by(UserID=user_id).first()
-    
-    if equipped_title:
-        first_title = db.query(Title).get(equipped_title.EquippedFirstTitleID)
-        second_title = db.query(Title).get(equipped_title.EquippedSecondTitleID)
-        
-        # 프로필 DB에서 사용자 프로필 업데이트
-        user_profile = db.query(UserProfiles).filter_by(UserID=user_id).first()
-        
-        if user_profile:
-            full_title = f"{first_title.Name if first_title else ''} {user_profile.Username} {second_title.Name if second_title else ''}"
-            user_profile.Username = full_title.strip()
-            db.commit()
 
 # 비밀번호 수정시 현재 비밀번호 일치 확인
 @profile.route('/check_password_match', methods=['POST'])

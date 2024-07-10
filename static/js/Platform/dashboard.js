@@ -24,9 +24,8 @@ async function getSubscriptionData(serviceName, days = 30) {
   }
 }
 
-function generateDateRange(days) {
+function generateDateRange(endDate, days) {
   const dates = [];
-  const endDate = new Date(); // 현재 날짜를 사용
   for (let i = days - 1; i >= 0; i--) {
     const date = new Date(endDate);
     date.setDate(date.getDate() - i);
@@ -37,7 +36,8 @@ function generateDateRange(days) {
 
 
 function processChartData(data, days) {
-  const dateRange = generateDateRange(days);
+  const endDate = new Date();
+  const dateRange = generateDateRange(endDate, days);
   return dateRange.map(date => {
     const dayData = data.find(item => item.date === date) || { active: 0, inactive: 0, canceled: 0 };
     return {
@@ -66,7 +66,7 @@ function drawChart(data, serviceName, days) {
                   data: processedData.map(item => item.canceled),
                   backgroundColor: '#DF0101',
                   borderColor: '#DF0101',
-                  fill: true,
+                  fill: false,
                   tension: 0.1
               },
               {
@@ -74,7 +74,7 @@ function drawChart(data, serviceName, days) {
                   data: processedData.map(item => item.inactive),
                   backgroundColor: '#6E6E6E',
                   borderColor: '#6E6E6E',
-                  fill: true,
+                  fill: false,
                   tension: 0.1
               },
               {
@@ -117,10 +117,6 @@ function drawChart(data, serviceName, days) {
       }
   });
 }
-
-setInterval(async () => {
-  await updateChart();
-}, 60000); // 1분마다 업데이트
 
 //==========================일일 활성 사용자수 + 일일 활성 서비스 사용량===========================================//
 
@@ -187,99 +183,76 @@ function drawDailyActiveUsersGraph(data) {
 }
 
 function drawDailyServiceUsageGraph(data) {
-  console.log('Received data for daily service usage:', data);  // 로그 추가
-
   const ctx = document.getElementById('service-usage-graph').getContext('2d');
   if (serviceUsageChart) {
-    serviceUsageChart.destroy();
+      serviceUsageChart.destroy();
   }
-
-  // 데이터가 없거나 빈 배열인 경우 기본 데이터 사용
-  if (!data || data.length === 0) {
-    data = [{
-      date: '데이터 없음',
-      Robot: 0,
-      SmartRoutine: 0,
-      ProfileIMG: 0
-    }];
-  }
-
-  const todayData = data[0];  // 오늘의 데이터만 사용
 
   serviceUsageChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['오늘의 서비스 사용량'],
-      datasets: [
-        {
-          label: 'Robot',
-          data: [todayData.Robot],
-          backgroundColor: '#F28B30'
-        },
-        {
-          label: 'SmartRoutine',
-          data: [todayData.SmartRoutine],
-          backgroundColor: '#C00000'
-        },
-        {
-          label: 'ProfileIMG',
-          data: [todayData.ProfileIMG],
-          backgroundColor: '#4472C4'
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: '사용량'
-          }
-        },
-        x: {
-          title: {
-            display: true,
-            text: '서비스'
-          }
-        }
+      type: 'bar',
+      data: {
+          labels: data.map(item => item.date),
+          datasets: [
+              {
+                  label: 'Robot',
+                  data: data.map(item => item.Robot),
+                  backgroundColor: '#F28B30'
+              },
+              {
+                  label: 'SmartRoutine',
+                  data: data.map(item => item.SmartRoutine),
+                  backgroundColor: '#C00000'
+              }
+          ]
       },
-      plugins: {
-        title: {
-          display: true,
-          text: `오늘(${todayData.date})의 서비스 사용량`
-        },
-        legend: {
-          display: true
+      options: {
+          responsive: true,
+          scales: {
+              y: {
+                  beginAtZero: true,
+                  title: {
+                      display: true,
+                      text: '사용량'
+                  }
+              },
+              x: {
+                  title: {
+                      display: true,
+                      text: '날짜'
+                  }
+              }
+          },
+          plugins: {
+              title: {
+                  display: true,
+                  text: '일일 서비스 사용량'
+              }
+          },
+          ticks: {
+            stepSize: 1,
+            precision: 0
         }
       }
-    }
   });
-
-  console.log('Chart data:', serviceUsageChart.data);  // 로그 추가
 }
-//==========================================연령대별 사용자 분포=======================================//
+
+//==========================================연령대별 사용자 분포=============================================//
+
 function drawAgeDistributionChart(data) {
   const ctx = document.getElementById('ageDistributionChart').getContext('2d');
   if (ageDistributionChart) {
     ageDistributionChart.destroy();
   }
 
-  // 데이터가 없거나 빈 배열인 경우 기본 데이터 사용
-  if (!data || data.length === 0) {
-    data = [
-      { age_group: '데이터 없음', count: 0 }
-    ];
-  }
-
+  const labels = data.map(item => item.age_group);
+  const counts = data.map(item => item.count);
   ageDistributionChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: data.map(item => item.age_group),
+      labels: labels,
       datasets: [{
-        label: '사용자 수',
-        data: data.map(item => item.count),
+        label: '사용자수',
+        data: counts,
         backgroundColor: '#F28B30'
       }]
     },
@@ -290,55 +263,24 @@ function drawAgeDistributionChart(data) {
           beginAtZero: true,
           title: {
             display: true,
-            text: '사용자 수'
-          },
-          ticks: {
-            stepSize: 1,
-            precision: 0
+            text: '사용자수'
           }
         },
         x: {
           title: {
             display: true,
-            text: '연령대'
+            text: '나이'
           }
         }
       },
       plugins: {
         title: {
           display: true,
-          text: '연령대별 사용자 분포'
-        },
-        legend: {
-          display: false
+          text: '연령대별 사용자수'
         }
       }
     }
   });
-}
-
-function initAgeDistribution() {
-  fetch('/dashboard/api/age-distribution')
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      if (data.message === "No data available") {
-        console.log("No data available for age distribution");
-        drawAgeDistributionChart([]); // 빈 데이터로 그래프 그리기
-      } else if (Array.isArray(data)) {
-        drawAgeDistributionChart(data);
-      } else {
-        drawAgeDistributionChart(data.distribution);
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching age distribution data:', error);
-      drawAgeDistributionChart([]); // 에러 발생 시 빈 데이터로 그래프 그리기
-    });
 }
 
 //==========================================초기화 부분=============================================//
@@ -388,16 +330,11 @@ async function initDailyActiveUsersGraph() {
 }
 
 async function initDailyServiceUsageGraph() {
-  try {
-    const data = await getDailyServiceUsage();
-    drawDailyServiceUsageGraph(data);  // 데이터의 유무와 관계없이 항상 그래프를 그립니다.
-    
-    if (data.length === 0) {
-      console.warn('서비스 사용량 데이터가 없습니다. 빈 그래프가 표시됩니다.');
-    }
-  } catch (error) {
-    console.error('서비스 사용량 그래프 초기화 중 오류 발생:', error);
-    drawDailyServiceUsageGraph([]);  // 오류 발생 시에도 빈 데이터로 그래프를 그립니다.
+  const data = await getDailyServiceUsage();
+  if (data.length > 0) {
+    drawDailyServiceUsageGraph(data);
+  } else {
+    console.error('서비스 사용량 데이터가 없습니다.');
   }
 }
 

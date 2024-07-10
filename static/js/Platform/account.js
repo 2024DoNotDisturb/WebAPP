@@ -156,14 +156,122 @@ $(document).ready(function() {
         $('#generateImageModal').modal('show');
     });
 
+    function updateUsageDate() {
+        var usageDateText = $('.text-generate').text().trim();
+        var usageDateTime;
+
+        if (usageDateText === "") {
+            $('#text-generate').text('-');
+            return; 
+        }
+
+        usageDateTime = new Date(usageDateText);
+        if (isNaN(usageDateTime.getTime())) {
+            $('#text-generate').text('-');
+            return; 
+        }
+
+        var today = new Date();
+        var timeDiff = Math.abs(today - usageDateTime);
+
+        if($('#text-generate').text('-') == '-'){
+            $('#generate-image-btn').show();
+            $('#show-image-btn').hide();
+        }
+        else if (timeDiff <= 20 * 60 * 1000) {
+            $('#generate-image-btn').hide();
+            $('#show-image-btn').show();
+            $('#show-image-btn').prop('disabled', true);
+        }else if (timeDiff >= 20 * 60 * 1000) {
+            $('#generate-image-btn').hide(); 
+            $('#show-image-btn').show();
+            $('#show-image-btn').prop('disabled', false);
+        }
+
+        var isToday = usageDateTime.getDate() === today.getDate() &&
+                    usageDateTime.getMonth() === today.getMonth() &&
+                    usageDateTime.getFullYear() === today.getFullYear();
+
+        if (isToday) {
+            var hours = usageDateTime.getHours().toString().padStart(2, '0');
+            var minutes = usageDateTime.getMinutes().toString().padStart(2, '0');
+            $('.text-generate').text(hours + ':' + minutes);
+        } else {
+            $('.text-generate').text('-');
+        }
+    }
+    updateUsageDate(); 
+
     $('#confirmGenerateBtn').click(function() {
         var prompt = $('#prompt').val();
         var n_prompt = $('#n_prompt').val();
 
-        // 여기서 필요한 작업을 수행 (예: 이미지 처리 등)
+        $.ajax({
+            method: 'POST',
+            url: '/generate/request_generate_image',
+            data: {
+                prompt: prompt,
+                negative_prompt: n_prompt
+            },
+            success: function(response) {
+                alert('요청 성공 20분 뒤 확인하러 오세요');
+                window.location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error('Error checking password match:', error);
+            }
+        });
+        updateUsageDate();
 
+
+        $('#prompt').val('');  
+        $('#n_prompt').val('');  
         $('#generateImageModal').modal('hide');
     });
 
+    $('#cancelGenerateBtn').click(function() {
+        $('#prompt').val('');  
+        $('#n_prompt').val('');  
+        $('#generateImageModal').modal('hide');
+    });
+
+    $('#show-image-btn').click(function() {
+        $.ajax({
+            method: 'POST',
+            url: '/generate/request_show_image',
+            success: function(response) {
+                if (response.success) {
+                    var imgSrc = 'data:image/jpeg;base64,' + response.image_data;
+                    $('#imageModal').modal('show');
+                    $('#modalImage').attr('src', imgSrc);
+                } else {
+                    // AI 생성 이미지를 가져오는 데 실패한 경우 기본 이미지로 대체
+                    console.error('AI 생성 이미지 가져오기 실패');
+                }
+            },
+            error: function(xhr, status, error) {
+                // 에러 발생 시 기본 이미지로 대체
+                console.error('AI 생성 이미지 요청 중 에러:', error);
+                var imgSrc = '{{ url_for("static", filename="src/default-profile-img.png") }}';
+                $('#imageModal').modal('show');
+                $('#modalImage').attr('src', imgSrc);
+            }
+        });
+    });
+
+    $('#confirmshowimageBtn').click(function() {
+        $.ajax({
+            method: 'POST',
+            url: '/generate/request_chage_generate_image',
+            success: function(response) {
+                if (response.success) {
+                    alert('프로필 변경 성공');
+                    window.location.reload();
+                } else {
+                    console.error('프로필 이미지 변경 실패');
+                }
+            }
+        });
+    });
 });
- 
+

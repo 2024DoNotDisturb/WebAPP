@@ -1,8 +1,7 @@
-from flask import Blueprint, jsonify, request, current_app
+from flask import Blueprint, jsonify, request
 from model.model_platform import db, AIServices, UserServices, ServiceUsage, User
 from sqlalchemy import func, case
 from datetime import datetime, timedelta
-from sqlalchemy import func
 
 dashboard = Blueprint('dashboard', __name__)
 
@@ -70,35 +69,51 @@ def get_daily_service_usage():
     # 오늘 날짜 계산
     today = datetime.now().date()
     
-    # 로봇, 루틴, ProfileIMG 서비스의 ID 가져오기
-    services = AIServices.query.filter(AIServices.ServiceName.in_(['Robot', 'SmartRoutine', 'ProfileIMG'])).all()
-    if len(services) != 3:
-        return jsonify({'error': 'One or more services not found'}), 404
+    # 최근 7일간의 데이터를 가져오기 위한 시작 날짜 계산
+    start_date = today - timedelta(days=6)
 
-    # 오늘의 서비스별 사용량 쿼리
+    # 로봇과 루틴 서비스의 ID 가져오기
+    robot_service = AIServices.query.filter_by(ServiceName='Robot').first()
+    routine_service = AIServices.query.filter_by(ServiceName='SmartRoutine').first()
+
+    if not robot_service or not routine_service:
+        return jsonify({'error': 'Services not found'}), 404
+
+    # 각 서비스별 일일 사용량 쿼리
     usage_data = db.session.query(
+        func.date(ServiceUsage.UsageDate).label('date'),
         AIServices.ServiceName,
         func.sum(ServiceUsage.UsageAmount).label('total_usage')
     ).join(AIServices).filter(
-        func.date(ServiceUsage.UsageDate) == today,
-        AIServices.ServiceID.in_([s.ServiceID for s in services])
+        ServiceUsage.UsageDate >= start_date,
+        AIServices.ServiceID.in_([robot_service.ServiceID, routine_service.ServiceID])
     ).group_by(
+        func.date(ServiceUsage.UsageDate),
         AIServices.ServiceName
+    ).order_by(
+        func.date(ServiceUsage.UsageDate)
     ).all()
 
-    # 결과를 딕셔너리로 변환
-    result = {
-        'date': today.isoformat(),
-        'Robot': 0,
-        'SmartRoutine': 0,
-        'ProfileIMG': 0
-    }
+    # 결과를 날짜별로 정리
+    result = {}
     for usage in usage_data:
-        result[usage.ServiceName] = usage.total_usage
+        date_str = usage.date.isoformat()
+        if date_str not in result:
+            result[date_str] = {'Robot': 0, 'SmartRoutine': 0}
+        result[date_str][usage.ServiceName] = usage.total_usage
 
-    return jsonify([result])
+    # 결과를 리스트 형태로 변환
+    formatted_result = [
+        {
+            'date': date,
+            'Robot': data['Robot'],
+            'SmartRoutine': data['SmartRoutine']
+        } for date, data in result.items()
+    ]
 
+    return jsonify(formatted_result)
 
+from sqlalchemy import func
 
 @dashboard.route('/api/age-distribution')
 def get_age_distribution():

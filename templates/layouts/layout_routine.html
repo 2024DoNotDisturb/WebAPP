@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
-    <meta name="viewport" content="width=360, height=800, initial-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SmartPlatform Header with Mobile Navigation Bar{% endblock %}</title>
 
     <!-- 부트스트랩 CSS 링크 -->
@@ -19,7 +18,7 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            width: 100%; /* 변경: max-width 제거, width 100%로 설정 */
+            width: 100%; 
         }
 
         .header {
@@ -29,13 +28,14 @@
             box-shadow: -5px -5px 10px rgba(255, 255, 255, 0.05), 5px 5px 15px rgba(0, 0, 0, 0.5);
             position: fixed;
             top: 0;
-            left: 0; /* 추가: 왼쪽 정렬 확실히 하기 */
+            left: 0;
             text-align: center;
             z-index: 1000;
         }
 
         .content {
             margin-top: 100px;
+            padding-bottom: 60px;
             height: 800px;
             width: 100%; /* 변경: 360px에서 100%로 */
             max-width: 360px; /* 추가: 최대 너비 설정 */

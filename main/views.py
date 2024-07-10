@@ -66,6 +66,9 @@ def check_login_status():
 def routine():
     return render_template('SmartRoutine/routine.html')
 
+@views_bp.route('/routine_setting')
+def routine_setting():
+    return render_template('SmartRoutine/routine_setting.html')
 
 @views_bp.route('/redirect-to-webapp')
 def redirect_to_webapp():

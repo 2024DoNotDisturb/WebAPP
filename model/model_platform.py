@@ -5,12 +5,11 @@ from sqlalchemy.orm import sessionmaker
 import flask_login
 from config import Config
 
-
-
 db = SQLAlchemy()
 
 # 데이터베이스 엔진 생성
 engine = create_engine(Config.SQLALCHEMY_DATABASE_URI)
+
 # Session 클래스 생성
 Session = sessionmaker(bind=engine)
 

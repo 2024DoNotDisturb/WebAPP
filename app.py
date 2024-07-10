@@ -9,7 +9,6 @@ from main.profile import profile
 from main.dashboard import dashboard
 from main.routine_home import routine
 
-
 # SSL 검증 비활성화
 if getattr(ssl, '_create_unverified_context', None):
     ssl._create_default_https_context = ssl._create_unverified_context
