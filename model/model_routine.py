@@ -11,6 +11,7 @@ class Routines(db.Model):
     RoutineName = Column(String(100), nullable=False)
     Description = Column(Text)
 
+
 # 루틴 스케줄 테이블
 class RoutineSchedules(db.Model):
     __bind_key__ = 'service_db'
@@ -21,9 +22,9 @@ class RoutineSchedules(db.Model):
     UserID = Column(Integer, ForeignKey('Users.UserID'))
     Username = Column(String(255), ForeignKey('Users.Username'))
     RoutineName = Column(String(100), ForeignKey('Routines.RoutineName'), nullable=False)
-    DayOfWeek = Column(Enum('월', '화', '수', '목', '금', '토', '일', '매일매일', '주말만', '평일만'))
     StartTime = Column(Time)
     Duration = Column(Time)
+    DayOfWeek = Column(Enum('월', '화', '수', '목', '금', '토', '일'))
     AlarmText = Column(Text)
 
 # 스마트홈 디바이스 테이블
@@ -32,11 +33,12 @@ class SmartDevices(db.Model):
     __tablename__ = 'SmartDevices'
 
     DeviceID = Column(Integer, primary_key=True, autoincrement=True)
-    UserID = Column(Integer, ForeignKey('platform.Users.UserID'))
+    UserID = Column(Integer, ForeignKey('Users.UserID'))
     DeviceName = Column(String(50), nullable=False)
     DeviceType = Column(Enum('sensor', 'light', 'mainboard'))
     Location = Column(String(100))
     IsActive = Column(Boolean, default=False)
+
 
 # 디바이스 데이터 테이블
 class DeviceData(db.Model):
@@ -44,7 +46,7 @@ class DeviceData(db.Model):
     __tablename__ = 'DeviceData'
 
     DataID = Column(Integer, primary_key=True, autoincrement=True)
-    UserID = Column(Integer, ForeignKey('platform.Users.UserID'))
+    UserID = Column(Integer, ForeignKey('platfrom.Users.UserID'))
     DeviceID = Column(Integer, ForeignKey('SmartDevices.DeviceID'))
     Value = Column(Float)
     Timestamp = Column(Time, default=func.now())
@@ -69,10 +71,11 @@ class Alarms(db.Model):
     __tablename__ = 'Alarms'
 
     AlarmID = Column(Integer, primary_key=True, autoincrement=True)
-    UserID = Column(Integer, ForeignKey('platform.Users.UserID'))
+    UserID = Column(Integer, ForeignKey('Users.UserID'))
     ScheduleID = Column(Integer, ForeignKey('RoutineSchedules.ScheduleID'))
     StartTime = Column(Time, ForeignKey('RoutineSchedules.StartTime'))
     AlarmText = Column(Text, ForeignKey('RoutineSchedules.AlarmText'))
+
 
 # 칭호 테이블
 class Title(db.Model):
@@ -89,7 +92,7 @@ class UserTitleStatus(db.Model):
     __bind_key__ = 'service_db'
     __tablename__ = 'UserTitleStatus'
 
-    UserID = Column(Integer, ForeignKey('platform.Users.UserID'), primary_key=True)
+    UserID = Column(Integer, ForeignKey('Users.UserID'), primary_key=True)
     TitleID = Column(Integer, ForeignKey('Title.TitleID'), primary_key=True)
     Unlocked = Column(Boolean, default=False)  # 칭호 해제 여부
     UnlockedDate = Column(DateTime, nullable=True)  # 칭호 해제 날짜
@@ -99,7 +102,7 @@ class UserEquippedTitle(db.Model):
     __bind_key__ = 'service_db'
     __tablename__ = 'UserEquippedTitle'
 
-    UserID = Column(Integer, ForeignKey('platform.Users.UserID'), primary_key=True)
+    UserID = Column(Integer, ForeignKey('Users.UserID'), primary_key=True)
     EquippedFirstTitleID = Column(Integer, ForeignKey('Title.TitleID'), nullable=True)  # 앞 칭호
     EquippedSecondTitleID = Column(Integer, ForeignKey('Title.TitleID'), nullable=True)  # 뒤 칭호
 
