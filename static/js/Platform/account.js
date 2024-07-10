@@ -1,55 +1,6 @@
 $(document).ready(function() {
     var pwdPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/;
 
-    // 칭호 수정 버튼 클릭 시
-    $('#edit-title-btn').click(function() {
-        var $title1 = $('.list-group-item:nth-child(1) .text-secondary').text().trim();
-        var $title2 = $('.list-group-item:nth-child(2) .text-secondary').text().trim();
-
-        var $input1 = $('<input>').attr({
-            type: 'text',
-            class: 'form-control edit-title-input',
-            value: $title1
-        });
-
-        var $input2 = $('<input>').attr({
-            type: 'text',
-            class: 'form-control edit-title-input',
-            value: $title2
-        });
-
-        $('.list-group-item:nth-child(1) .text-secondary').replaceWith($input1);
-        $('.list-group-item:nth-child(2) .text-secondary').replaceWith($input2);
-
-        $(this).addClass('d-none');
-        $('#save-title-btn').removeClass('d-none');
-    });
-
-    $('#save-title-btn').click(function() {
-        var new_firstname = $('.list-group-item:nth-child(1) .edit-title-input').val();
-        var new_lastname = $('.list-group-item:nth-child(2) .edit-title-input').val();
-
-        $.ajax({
-            method: 'POST',
-            url: '/profile/update_first_lastname',
-            data: {
-                newFirstName: new_firstname,
-                newLastName: new_lastname
-            },
-            success: function(response) { 
-                alert('프로필이 성공적으로 업데이트되었습니다.');
-                window.location.reload();
-                
-                $('#save-title-btn').addClass('d-none');
-                $('#edit-title-btn').removeClass('d-none');
-            },
-            error: function(xhr, status, error) {
-                console.error('Error saving titles:', error);
-                alert('칭호 저장 중 오류가 발생했습니다. 나중에 다시 시도해주세요.');
-            }
-        });
-    });
-
     // 프로필 정보 수정 버튼 클릭 시
     $('#edit-profile-btn').click(function() {
         $('#change-password-btn').removeAttr('disabled');

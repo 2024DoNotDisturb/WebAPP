@@ -28,36 +28,8 @@ function fetchAllUserRoutines() {
 }
 
 function filterRoutinesByDay(selectedDay) {
-    console.log('Filtering for day:', selectedDay);
-    const weekdays = ['월요일', '화요일', '수요일', '목요일', '금요일'];
-    const weekends = ['토요일', '일요일'];
-    const isWeekday = weekdays.includes(selectedDay);
-    const isWeekend = weekends.includes(selectedDay);
-
-    const filtered = allRoutines.filter(routine => {
-        // 선택된 요일이 루틴의 Days 배열에 포함되어 있는 경우
-        if (routine.Days.includes(selectedDay)) {
-            return true;
-        }
-        // '매일매일' 루틴 (Days 배열에 모든 요일이 포함됨)
-        if (routine.Days.length === 7) {
-            return true;
-        }
-        // 평일이 선택되었고, 루틴이 '평일만'인 경우
-        if (isWeekday && routine.Days.length === 5 && weekdays.every(day => routine.Days.includes(day))) {
-            return true;
-        }
-        // 주말이 선택되었고, 루틴이 '주말만'인 경우
-        if (isWeekend && routine.Days.length === 2 && weekends.every(day => routine.Days.includes(day))) {
-            return true;
-        }
-        return false;
-    });
-
-    console.log('Filtered routines:', filtered);
-    return filtered;
+    return allRoutines.filter(routine => routine.Day === selectedDay);
 }
-
 
 function displayRoutines(routines) {
     const routineList = document.getElementById('routine-list');
@@ -71,39 +43,50 @@ function displayRoutines(routines) {
     routines.forEach(routine => {
         const li = document.createElement('li');
         
-        // ActionType에 따라 표시할 텍스트 결정
-        let actionText, actionColor;;
+        let actionText, actionColor;
         switch(routine.ActionType.toLowerCase()) {
             case 'wait':
                 actionText = '대기중';
-                actionColor = '#333333'; // 회색
+                actionColor = '#333333';
                 break;
             case 'true':
                 actionText = '성공';
-                actionColor = '#008000'; // 초록색
+                actionColor = '#008000';
                 break;
             case 'false':
                 actionText = '실패';
-                actionColor = '#FF0000'; // 빨간색
+                actionColor = '#FF0000';
                 break;
             default:
-                actionText = routine.ActionType; // 기본값으로 원래 ActionType 표시
+                actionText = routine.ActionType;
                 actionColor = '#333333'; 
         }
 
         li.innerHTML = `
             <span class="routine-time">${routine.StartTime || '시간 미설정'}</span>
             <span class="routine-name">${routine.RoutineName}</span>
-            <span class="routine-action ${actionText.toLowerCase()}">${actionText}</span>
+            <span class="routine-action ${actionText.toLowerCase()}" data-schedule-id="${routine.ScheduleID}">${actionText}</span>
         `;
         routineList.appendChild(li);
     });
 }
 
-
 function setupDayButtons() {
+    fetch('/routine/user_routines', {
+        method: 'GET',
+        credentials: 'include'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     const dayButtons = document.querySelectorAll('.day-button');
-    dayButtons.forEach(button => {
+    const days = ['월', '화', '수', '목', '금', '토', '일'];
+    
+    dayButtons.forEach((button, index) => {
+        button.textContent = days[index];
         button.addEventListener('click', function() {
             dayButtons.forEach(btn => btn.classList.remove('active'));
             this.classList.add('active');
@@ -117,11 +100,35 @@ function setupDayButtons() {
 
 function activateTodayButton() {
     const today = new Date().getDay();
-    const days = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
-    const todayButton = document.querySelector(`.day-button:nth-child(${today + 1})`);
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    const todayName = days[today];
+    const todayButton = document.querySelector(`.day-button:nth-child(${(today === 0 ? 7 : today)})`);
     if (todayButton) {
         todayButton.click();
+    } else {
+        console.warn('Today button not found');
     }
+}
+
+function resetRoutineStatuses() {
+    fetch('/routine/reset_routine_statuses', {
+        method: 'POST',
+        credentials: 'include'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Routine statuses reset:', data);
+        fetchAllUserRoutines(); // 루틴 목록을 새로고침
+    })
+    .catch(error => {
+        console.error('Error resetting routine statuses:', error);
+        displayError('루틴 상태 초기화 중 오류가 발생했습니다.');
+    });
 }
 
 // 루틴 추가 버튼 이벤트 리스너

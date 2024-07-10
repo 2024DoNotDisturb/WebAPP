@@ -1,7 +1,7 @@
 class Config:
     user = "root"
     password = "wsu1234!"
-    host = "10.101.123.75"
+    host = "10.101.132.228"
     port = "3306"
     database = "platform"
 

@@ -118,15 +118,15 @@ ul {
 
 #routine-list li {
     list-style-type: none;
-    padding: 0px 5px;
-    margin-bottom: 2px; /* 행 간격을 줄임 */
+    padding: 5px 5px;
+    margin-bottom: 2px;
     background-color: #fff;
     border-radius: 5px;
     font-size: 15px;
     color: #333;
-    display: flex; /* Flexbox 사용 */
-    justify-content: space-between; /* 항목들을 균등하게 분배 */
-    align-items: center; /* 세로 중앙 정렬 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #routine-list li span {
