@@ -262,40 +262,35 @@ function updateTitleList(titles) {
 // 전역 변수로 현재 선택된 칭호를 저장
 let selectedTitle = null;
 
-function selectTitle(titleId, type) {
-    console.log("Function called with:", { titleId, type });
+function selectTitle(titleId, type, titleName) {
+    console.log("Function called with:", { titleId, type, titleName });
 
-    // titleId가 undefined나 null이면 함수를 종료합니다.
     if (titleId == null) {
         console.log("Invalid titleId");
         return;
     }
 
-    // titleId를 문자열로 변환
     titleId = String(titleId);
 
-    // 클릭된 칭호를 찾습니다.
     const clickedTitle = document.querySelector(`.title-item[data-id="${titleId}"]`);
-    
     console.log("Clicked title element:", clickedTitle);
 
     if (clickedTitle) {
-        // 현재 선택된 칭호와 같은 칭호를 클릭한 경우, 선택을 해제합니다.
         if (selectedTitle === titleId) {
             clickedTitle.style.color = '';
             selectedTitle = null;
         } else {
-            // 이전에 선택된 칭호가 있다면 그 색상을 초기화합니다.
             if (selectedTitle) {
                 const previousSelectedTitle = document.querySelector(`.title-item[data-id="${selectedTitle}"]`);
                 if (previousSelectedTitle) {
                     previousSelectedTitle.style.color = '';
                 }
             }
-            
-            // 새로운 칭호를 선택 상태로 만듭니다.
             clickedTitle.style.color = 'var(--accent4)';
             selectedTitle = titleId;
+
+            // 모달 창을 띄웁니다.
+            showModal(titleName);
         }
     } else {
         console.log("Clicked title element not found");
@@ -303,7 +298,6 @@ function selectTitle(titleId, type) {
 
     console.log(`Selected Title:`, selectedTitle);
 }
-
 
 function createTitleList(titles, type) {
     const list = document.createElement('ul');
@@ -322,7 +316,7 @@ function createTitleList(titles, type) {
             li.onclick = function(event) {
                 event.preventDefault();
                 console.log("Title clicked:", { id: titleId, name: title.TitleName });
-                selectTitle(titleId, type);
+                selectTitle(titleId, type, title.TitleName);
             };
             list.appendChild(li);
         }
@@ -335,4 +329,41 @@ function createTitleList(titles, type) {
     }
 
     return list;
+}
+
+
+// 모달 관련 함수들
+
+function showModal(titleName) {
+    const modalBackground = document.querySelector('.modal-background');
+    const modal = document.querySelector('.title-setting');
+    const heading = modal.querySelector('.title-setting-heading');
+    const titleNameSpan = modal.querySelector('.title-name');
+    const cancelButton = modal.querySelector('.secondary');
+    const applyButton = modal.querySelector('.primary');
+    const exitButton = modal.querySelector('.exit-button');
+
+    heading.textContent = '칭호 착용';
+    titleNameSpan.textContent = titleName;
+    
+    modalBackground.style.display = 'flex';
+
+    cancelButton.onclick = closeModal;
+    exitButton.onclick = closeModal;
+    applyButton.onclick = function() {
+        console.log(`Applied title: ${titleName}`);
+        closeModal();
+    };
+
+    modalBackground.onclick = function(event) {
+        if (event.target === modalBackground) {
+            closeModal();
+        }
+    };
+}
+
+
+function closeModal() {
+    const modalBackground = document.querySelector('.modal-background');
+    modalBackground.style.display = 'none';
 }

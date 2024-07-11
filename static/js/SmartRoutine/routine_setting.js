@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
         keyboard: false // ESC 키로 모달을 닫는 기능 비활성화
     });
 
-    addRoutineBtn.addEventListener('click', function () {
+    addRoutine.addEventListener('click', function () {
         // 모달 열기
         routineModal.show();
     });
