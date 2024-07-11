@@ -8,6 +8,8 @@ from main.auth import auth
 from main.profile import profile
 from main.dashboard import dashboard
 from main.routine_home import routine
+from main.title import title
+from main.generate_ai import generate
 
 # SSL 검증 비활성화
 if getattr(ssl, '_create_unverified_context', None):
@@ -42,6 +44,9 @@ app.register_blueprint(auth, url_prefix='/auth')
 app.register_blueprint(profile, url_prefix='/profile')
 app.register_blueprint(dashboard, url_prefix='/dashboard')
 app.register_blueprint(routine, url_prefix='/routine')
+app.register_blueprint(title, url_prefix='/title')
+app.register_blueprint(generate, url_prefix='/generate')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -18,10 +18,10 @@ class RoutineSchedules(db.Model):
     __tablename__ = 'RoutineSchedules'
 
     ScheduleID = Column(Integer, primary_key=True, autoincrement=True)
-    RoutineID = Column(Integer, ForeignKey('Routines.RoutineID'))
-    UserID = Column(Integer, ForeignKey('Users.UserID'))
-    Username = Column(String(255), ForeignKey('Users.Username'))
-    RoutineName = Column(String(100), ForeignKey('Routines.RoutineName'), nullable=False)
+    RoutineID = Column(Integer)
+    UserID = Column(Integer)
+    Username = Column(String(255), nullable=False)
+    RoutineName = Column(String(100), nullable=False)
     StartTime = Column(Time)
     Duration = Column(Time)
     DayOfWeek = Column(Enum('월', '화', '수', '목', '금', '토', '일'))
@@ -63,7 +63,7 @@ class RoutineActions(db.Model):
     StartTime = Column(Time, ForeignKey('RoutineSchedules.StartTime'))
     RoutineName = Column(String(100), ForeignKey('Routines.RoutineName'), nullable=False)
     ActionType = Column(Enum('TRUE', 'FALSE', 'WAIT'))
-    UserID = Column(Integer, ForeignKey('Users.UserID'))
+    UserID = Column(Integer)
 
 # 알람 테이블
 class Alarms(db.Model):
@@ -102,10 +102,10 @@ class UserEquippedTitle(db.Model):
     __bind_key__ = 'service_db'
     __tablename__ = 'UserEquippedTitle'
 
-    UserID = Column(Integer, ForeignKey('Users.UserID'), primary_key=True)
+    UserID = Column(Integer, primary_key=True)
     EquippedFirstTitleID = Column(Integer, ForeignKey('Title.TitleID'), nullable=True)  # 앞 칭호
-    EquippedSecondTitleID = Column(Integer, ForeignKey('Title.TitleID'), nullable=True)  # 뒤 칭호
+    EquippedLastTitleID = Column(Integer, ForeignKey('Title.TitleID'), nullable=True)  # 뒤 칭호
 
     # 관계 설정
     first_title = relationship('Title', foreign_keys=[EquippedFirstTitleID])
-    second_title = relationship('Title', foreign_keys=[EquippedSecondTitleID])
+    last_title = relationship('Title', foreign_keys=[EquippedLastTitleID])

@@ -47,6 +47,7 @@ class UserProfiles(db.Model):
     LastName = Column(String(255))
     Address = Column(String(255))
     ProfilePicture = Column(LargeBinary)
+    ProfileURL = Column(String(255))
 
     user = relationship('User', back_populates='user_profile')
 

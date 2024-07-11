@@ -5,6 +5,18 @@ body{
     background-color: #e2e8f0;    
 }
 
+#loading-indicator {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1050;
+}
+
+.text-generate{
+    color: #6c757d;
+}
+
 #body-pd{
     background-color: #131419;
 }

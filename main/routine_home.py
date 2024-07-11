@@ -40,40 +40,6 @@ def get_user_routines():
         current_app.logger.error(f"Error in get_user_routines: {str(e)}")
         return jsonify({"error": "An internal server error occurred"}), 500
 
-# 루틴 수행 여부 판독 메서드 // 
-# @routine.route('/update_routine_status', methods=['POST'])
-# @login_required
-# def update_routine_status():
-#     try:
-#         current_user = flask_login.current_user
-#         user_id = current_user.UserID
-#         data = request.json
-#         schedule_id = data.get('schedule_id')
-#         action_type = data.get('action_type')
-
-#         if not schedule_id or action_type not in ['TRUE', 'FALSE']:
-#             return jsonify({"error": "Invalid input"}), 400
-
-#         routine_action = RoutineActions.query.filter_by(
-#             UserID=user_id,
-#             ScheduleID=schedule_id
-#         ).first()
-
-#         if not routine_action:
-#             return jsonify({"error": "Routine not found"}), 404
-
-#         routine_action.ActionType = action_type
-#         routine_action.Date = datetime.now()
-
-#         db.session.commit()
-
-#         current_app.logger.info(f"Updated routine status for user {user_id}, schedule {schedule_id} to {action_type}")
-#         return jsonify({"message": "Routine status updated successfully"}), 200
-
-#     except Exception as e:
-#         current_app.logger.error(f"Error in update_routine_status: {str(e)}")
-#         return jsonify({"error": "An internal server error occurred"}), 500
-    
 # 루틴 수행 여부 초기화 메서드 / 하루 단위로 초기화
 @routine.route('/reset_routine_statuses', methods=['POST'])
 @login_required
@@ -105,8 +71,9 @@ def reset_routine_statuses():
         current_app.logger.error(f"Error in reset_routine_statuses: {str(e)}")
         return jsonify({"error": "An internal server error occurred"}), 500
 
-@routine.route('/save-routine', methods=['POST'])
+@routine.route('/save_routine', methods=['POST'])
 def save_routine():
+    print('save routine')
     data = request.get_json()
 
     try:

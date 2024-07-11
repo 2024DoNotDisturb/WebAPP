@@ -132,50 +132,48 @@ function resetRoutineStatuses() {
     });
 }
 
-function AddRoutine(){
-        const addRoutineButton = document.getElementById('addRoutine');
+function AddRoutine() {
+    console.log('루틴 추가');
+    const addRoutineButton = document.getElementById('addRoutine');
 
-        addRoutineButton.addEventListener('click', function() {
-            const switchInputs = document.querySelectorAll('.radio-input[type="radio"]');
-        let selectedSwitchId = '';
+    const switchInputs = document.querySelectorAll('.radio-input[type="radio"]');
+    let selectedSwitchId = '';
 
-        switchInputs.forEach(input => {
-            if (input.checked) {
-                selectedSwitchId = input.id;
-            }
-        });
+    switchInputs.forEach(input => {
+        if (input.checked) {
+            selectedSwitchId = input.id;
+        }
+    });
 
-        const startTime = document.getElementById('startTimeInput').value;
-        const routineTime = document.getElementById('routineSelect').value;
-        const daysOfWeek = [];
+    const startTime = document.getElementById('startTimeInput').value;
+    const routineTime = document.getElementById('routineSelect').value;
+    const daysOfWeek = [];
 
-        const dayCheckboxes = document.querySelectorAll('.radio-inputs input[type="checkbox"]');
-        dayCheckboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                const dayName = checkbox.parentElement.querySelector('.name').textContent.trim();
-                daysOfWeek.push(dayName);
-            }
-        });
+    const dayCheckboxes = document.querySelectorAll('.radio-inputs input[type="checkbox"]');
+    dayCheckboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            const dayName = checkbox.parentElement.querySelector('.name').textContent.trim();
+            daysOfWeek.push(dayName);
+        }
+    });
 
-        const noticeText = document.querySelector('.notice_txt_input').value;
+    const noticeText = document.querySelector('.notice_txt_input').value;
 
-        console.log(selectedSwitchId)
+    const formData = {
+        routineID: selectedSwitchId,
+        startTime: startTime,
+        routineTime: routineTime,
+        daysOfWeek: daysOfWeek,
+        noticeText: noticeText
+    };
 
-        const formData = {
-            routineID: selectedSwitchId,
-            startTime: startTime,
-            routineTime: routineTime,
-            daysOfWeek: daysOfWeek,
-            noticeText: noticeText
-        };
-
-        fetch('/routine/save-routine', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-        })
+    fetch('/routine/save_routine', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -184,14 +182,17 @@ function AddRoutine(){
         })
         .then(data => {
             console.log('Routine successfully saved:', data);
+            window.location.reload();
         })
         .catch(error => {
             console.error('Error saving routine:', error);
         });
-    });
+
 }
 
-document.querySelector('.button-container .button').addEventListener('click', function() {
+document.getElementById('addRoutine').addEventListener('click', AddRoutine);
+
+document.querySelector('.button-container .button').addEventListener('click', function () {
     console.log('루틴 추가 버튼 클릭됨');
     const routineModal = new bootstrap.Modal(document.getElementById('routineModal'));
     routineModal.show();
@@ -290,7 +291,7 @@ function selectTitle(titleId, type, titleName) {
             selectedTitle = titleId;
 
             // 모달 창을 띄웁니다.
-            showModal(titleName);
+            showModal(titleName, type);
         }
     } else {
         console.log("Clicked title element not found");
@@ -298,6 +299,7 @@ function selectTitle(titleId, type, titleName) {
 
     console.log(`Selected Title:`, selectedTitle);
 }
+
 
 function createTitleList(titles, type) {
     const list = document.createElement('ul');
@@ -315,7 +317,7 @@ function createTitleList(titles, type) {
 
             li.onclick = function(event) {
                 event.preventDefault();
-                console.log("Title clicked:", { id: titleId, name: title.TitleName });
+                console.log("Title clicked:", { id: titleId, name: title.TitleName, type: type });
                 selectTitle(titleId, type, title.TitleName);
             };
             list.appendChild(li);
@@ -332,9 +334,9 @@ function createTitleList(titles, type) {
 }
 
 
-// 모달 관련 함수들
 
-function showModal(titleName) {
+// 모달 관련 함수들
+function showModal(titleName, type) {
     const modalBackground = document.querySelector('.modal-background');
     const modal = document.querySelector('.title-setting');
     const heading = modal.querySelector('.title-setting-heading');
@@ -351,7 +353,8 @@ function showModal(titleName) {
     cancelButton.onclick = closeModal;
     exitButton.onclick = closeModal;
     applyButton.onclick = function() {
-        console.log(`Applied title: ${titleName}`);
+        console.log(`Applying title: ${titleName}, Type: ${type}`);
+        updateEquippedTitle(titleName, type);
         closeModal();
     };
 
@@ -362,8 +365,36 @@ function showModal(titleName) {
     };
 }
 
-
 function closeModal() {
     const modalBackground = document.querySelector('.modal-background');
     modalBackground.style.display = 'none';
+}
+
+function updateEquippedTitle(titleName, type) {
+    fetch('/title/equip_title', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            title_name: titleName,
+            title_type: type
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(errorData => {
+                throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.error || 'Unknown error'}`);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Success:', data.message);
+        alert('칭호가 성공적으로 착용되었습니다.');
+    })
+    .catch((error) => {
+        console.error('Error:', error.message);
+        alert(`칭호 착용 중 오류가 발생했습니다: ${error.message}`);
+    });
 }

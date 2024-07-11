@@ -56,7 +56,7 @@ $(document).ready(function() {
         });
     });
 
-    //사진 업로드 input 변경 시 (프로필 사진 업로드)
+    // 사진 업로드 input 변경 시 (프로필 사진 업로드)
     $('#fileInput').on('change', function() {
         var file = this.files[0];
         var formData = new FormData();
@@ -69,7 +69,11 @@ $(document).ready(function() {
             data: formData,
             contentType: false,
             processData: false,
+            beforeSend: function() {
+                $('#loading-indicator').show();
+            },
             success: function(response) {
+                $('#loading-indicator').hide();
                 if (response.success) {
                     alert('프로필 사진이 성공적으로 업로드되었습니다.');
                     window.location.reload(); // 페이지 새로고침
@@ -78,6 +82,7 @@ $(document).ready(function() {
                 }
             },
             error: function(xhr, status, error) {
+                $('#loading-indicator').hide();
                 alert('서버 오류로 인해 프로필 사진 업로드에 실패했습니다: ' + error);
             }
         });
@@ -92,6 +97,7 @@ $(document).ready(function() {
         $('#check-password-btn').removeClass('d-none');
         $('#change-password-section').toggle(); // 비밀번호 변경 섹션을 보이거나 숨깁니다.
     });
+
     $('#check-password-btn').click(function() {
         var Password = $('#edit-password').val();
 
@@ -102,7 +108,11 @@ $(document).ready(function() {
             data: {
                 Password: Password
             },
+            beforeSend: function() {
+                $('#loading-indicator').show();
+            },
             success: function(response) {
+                $('#loading-indicator').hide();
                 if (response.match) {
                     $('#password-match-icon').html('<i class="bi bi-check2 text-success"></i>');
                 } else {
@@ -110,8 +120,8 @@ $(document).ready(function() {
                 }
             },
             error: function(xhr, status, error) {
+                $('#loading-indicator').hide();
                 console.error('Error checking password match:', error);
-                // 예외 처리: 오류 발생 시 메시지 출력 등
             }
         });
     });
@@ -135,7 +145,6 @@ $(document).ready(function() {
         $('#new-password').val('');
         var pwdFeedback = $('.pwdFeedbackNew'); 
         pwdFeedback.text('');
-
     });    
 
     $('#new-password').on('input', function() {
@@ -161,31 +170,22 @@ $(document).ready(function() {
         var usageDateTime;
 
         if (usageDateText === "") {
-            $('#text-generate').text('-');
+            $('.text-generate').text('-');
+            console.log('-')
             return; 
         }
 
         usageDateTime = new Date(usageDateText);
         if (isNaN(usageDateTime.getTime())) {
-            $('#text-generate').text('-');
+            $('.text-generate').text('-');
             return; 
         }
-
         var today = new Date();
         var timeDiff = Math.abs(today - usageDateTime);
 
-        if($('#text-generate').text('-') == '-'){
+        if($('.text-generate').text('-') == '-'){
             $('#generate-image-btn').show();
             $('#show-image-btn').hide();
-        }
-        else if (timeDiff <= 20 * 60 * 1000) {
-            $('#generate-image-btn').hide();
-            $('#show-image-btn').show();
-            $('#show-image-btn').prop('disabled', true);
-        }else if (timeDiff >= 20 * 60 * 1000) {
-            $('#generate-image-btn').hide(); 
-            $('#show-image-btn').show();
-            $('#show-image-btn').prop('disabled', false);
         }
 
         var isToday = usageDateTime.getDate() === today.getDate() &&
@@ -193,6 +193,16 @@ $(document).ready(function() {
                     usageDateTime.getFullYear() === today.getFullYear();
 
         if (isToday) {
+            if (timeDiff <= 20 * 60 * 1000) {
+                $('#generate-image-btn').hide();
+                $('#show-image-btn').show();
+                $('#show-image-btn').prop('disabled', true);
+            }else if (timeDiff >= 20 * 60 * 1000) {
+                $('#generate-image-btn').hide(); 
+                $('#show-image-btn').show();
+                $('#show-image-btn').prop('disabled', false);
+            }
+            
             var hours = usageDateTime.getHours().toString().padStart(2, '0');
             var minutes = usageDateTime.getMinutes().toString().padStart(2, '0');
             $('.text-generate').text(hours + ':' + minutes);
@@ -213,11 +223,16 @@ $(document).ready(function() {
                 prompt: prompt,
                 negative_prompt: n_prompt
             },
+            beforeSend: function() {
+                $('#loading-indicator').show();
+            },
             success: function(response) {
+                $('#loading-indicator').hide();
                 alert('요청 성공 20분 뒤 확인하러 오세요');
                 window.location.reload();
             },
             error: function(xhr, status, error) {
+                $('#loading-indicator').hide();
                 console.error('Error checking password match:', error);
             }
         });
@@ -239,18 +254,21 @@ $(document).ready(function() {
         $.ajax({
             method: 'POST',
             url: '/generate/request_show_image',
+            beforeSend: function() {
+                $('#loading-indicator').show();
+            },
             success: function(response) {
+                $('#loading-indicator').hide();
                 if (response.success) {
                     var imgSrc = 'data:image/jpeg;base64,' + response.image_data;
                     $('#imageModal').modal('show');
                     $('#modalImage').attr('src', imgSrc);
                 } else {
-                    // AI 생성 이미지를 가져오는 데 실패한 경우 기본 이미지로 대체
                     console.error('AI 생성 이미지 가져오기 실패');
                 }
             },
             error: function(xhr, status, error) {
-                // 에러 발생 시 기본 이미지로 대체
+                $('#loading-indicator').hide();
                 console.error('AI 생성 이미지 요청 중 에러:', error);
                 var imgSrc = '{{ url_for("static", filename="src/default-profile-img.png") }}';
                 $('#imageModal').modal('show');
@@ -263,15 +281,22 @@ $(document).ready(function() {
         $.ajax({
             method: 'POST',
             url: '/generate/request_chage_generate_image',
+            beforeSend: function() {
+                $('#loading-indicator').show();
+            },
             success: function(response) {
+                $('#loading-indicator').hide();
                 if (response.success) {
                     alert('프로필 변경 성공');
                     window.location.reload();
                 } else {
                     console.error('프로필 이미지 변경 실패');
                 }
+            },
+            error: function(xhr, status, error) {
+                $('#loading-indicator').hide();
+                console.error('프로필 이미지 변경 요청 중 에러:', error);
             }
         });
     });
 });
-

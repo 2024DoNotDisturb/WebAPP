@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, render_template, redirect, url_for, request
 from flask_login import current_user, login_required
+from model.model_platform import ServiceUsage
 import base64
 
 views_bp = Blueprint('views', __name__)
@@ -26,7 +27,10 @@ def account():
         if profile_picture:
             encoded_profile_picture = base64.b64encode(profile_picture).decode('utf-8')
 
-        return render_template('Platform/account.html', encoded_profile_picture=encoded_profile_picture)
+        recent_usage = ServiceUsage.query.filter_by(UserID=current_user.UserID).order_by(ServiceUsage.UsageDate.desc()).first()
+        recent_usage_date = recent_usage.UsageDate if recent_usage else None
+
+        return render_template('Platform/account.html', encoded_profile_picture=encoded_profile_picture, latestUsageDate=recent_usage_date)
     else:
         return redirect(url_for('auth.login'))
 

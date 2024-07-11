@@ -28,6 +28,8 @@ def handle_lambda_request():
         user_profile = user.user_profile[0]
         user_profile.ProfileURL = result
 
+        print(result)
+
         new_usage = ServiceUsage(
             UserID = user.UserID,
             ServiceID = service.ServiceID,
