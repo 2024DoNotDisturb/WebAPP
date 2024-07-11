@@ -1,9 +1,9 @@
 from flask import Blueprint, jsonify, current_app, request
-from flask_login import login_required
+from flask_login import current_user, login_required
 from sqlalchemy import and_, func
-from model.model_routine import db, RoutineSchedules, RoutineActions, Routines
+from model.model_routine import db, RoutineSchedules, RoutineActions, Routines, UserTitleStatus, Title, UserEquippedTitle
 import flask_login
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 routine = Blueprint('routine', __name__)
 
@@ -169,3 +169,32 @@ def calculate_duration(routine_time):
         minutes = 30 if '30분' in routine_time else 60
 
     return timedelta(hours=hours, minutes=minutes)
+
+
+@routine.route('/titles')
+@login_required
+def get_titles():
+    try:
+        current_user = flask_login.current_user
+        user_id = current_user.UserID
+        print(f"Fetching titles for user ID: {user_id}")  # 로그 추가
+
+        user_titles = UserTitleStatus.query.filter(UserTitleStatus.UserID == user_id).all()
+        print(f"Found {len(user_titles)} user titles")  # 로그 추가
+
+        titles = []
+        title_dict = {title.TitleID: title for title in Title.query.all()}
+        for user_title in user_titles:
+            title = title_dict.get(user_title.TitleID)
+            if title:
+                titles.append({
+                    'UnlockedID': user_title.UnlockedID,
+                    'TitleName': title.TitleName,
+                    'Type': title.Type
+                })
+        
+        print(f"Returning {len(titles)} titles")  # 로그 추가
+        return jsonify(titles)
+    except Exception as e:
+        print(f"Error in get_titles: {str(e)}")  # 에러 로그
+        return jsonify({"error": str(e)}), 500

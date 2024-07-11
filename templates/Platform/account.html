@@ -178,8 +178,8 @@
                             </div>
                             <div class="col-sm-9 text_input">
                                 <select name="status" id="edit-status" class="form-control" disabled>
-                                    <option value="active" {% if current_user.Status=='active' %}selected{%endif %}>active</option>
-                                    <option value="inactive" {% if current_user.Status=='inactive' %}selected{% endif %}>inactive</option>
+                                    <option value="active" {% if current_user.Status=='active' %}selected{%endif %}>활성화</option>
+                                    <option value="inactive" {% if current_user.Status=='inactive' %}selected{% endif %}>비활성화</option>
                                 </select>
                             </div>
                         </div>

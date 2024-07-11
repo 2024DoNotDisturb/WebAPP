@@ -145,19 +145,6 @@ body {
   margin-bottom: 1rem;
 }
 
-li {
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: var(--accent1);
-    border-radius: 10px;
-    color: var(--text);
-    transition: background-color 0.3s ease;
-}
-
-li:hover {
-    background-color: var(--accent2);
-}
-
 .day-buttons {
     /* display: flex; */
     justify-content: space-between;

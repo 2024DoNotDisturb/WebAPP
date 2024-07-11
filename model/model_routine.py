@@ -83,8 +83,8 @@ class Title(db.Model):
     __tablename__ = 'Title'
 
     TitleID = Column(Integer, primary_key=True, autoincrement=True)
-    Name = Column(String(255), unique=True, nullable=False)
-    Type = Column(Enum('First', 'Second'), nullable=False)  # 'First' for 앞, 'Second' for 뒤
+    TitleName = Column(String(255), unique=True, nullable=False)
+    Type = Column(Enum('First', 'Last'), nullable=False)  # 'First' for 앞, 'Last' for 뒤
     HiddenMission = Column(String(255), nullable=True)  # 히든 미션 설명
 
 # 칭호 해제 테이블
@@ -92,9 +92,9 @@ class UserTitleStatus(db.Model):
     __bind_key__ = 'service_db'
     __tablename__ = 'UserTitleStatus'
 
-    UserID = Column(Integer, ForeignKey('Users.UserID'), primary_key=True)
-    TitleID = Column(Integer, ForeignKey('Title.TitleID'), primary_key=True)
-    Unlocked = Column(Boolean, default=False)  # 칭호 해제 여부
+    UserID = Column(Integer, ForeignKey('Users.UserID'))
+    TitleID = Column(Integer, ForeignKey('Title.TitleID'))
+    UnlockedID = Column(Integer, primary_key=True)  # 칭호 해제 여부
     UnlockedDate = Column(DateTime, nullable=True)  # 칭호 해제 날짜
 
 # 사용자 칭호 착용 상태 테이블
