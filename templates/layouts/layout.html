@@ -3,25 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}layout{% endblock %}</title>
-    <link rel="stylesheet" href="static/css/Platform/sidebar.css">
-
-    {% block styles %}{% endblock %}
-</head>
-<body id="body-pd">
-    {% include 'layouts/sidebar.html' %}
-    {% include 'layouts/header.html' %}
-
-    <div class="content">
-        {% block content %}
-        {% endblock %}
-    </div>
-
-    {% include 'layouts/footer.html' %}
+    <title>{% block title %}SmartPlatform Header with Mobile Navigation Bar{% endblock %}</title>
 
     <!-- IONICONS -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #131419 !important;
+            color: #131419;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        .header {
+            width: 100%;
+            background-color: #131419;
+            padding: 20px 0px;
+            box-shadow: -5px -5px 10px rgba(255, 255, 255, 0.05), 5px 5px 15px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .content {
+            margin-top: 100px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            padding-bottom: 30px;
+        }
+
+        .navbar_1 {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #131419;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 60px;
+            box-shadow: -5px -5px 10px rgba(255, 255, 255, 0.05), 5px 5px 15px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #fff;
+            font-size: 16px;
+            text-transform: uppercase;
+            transition: color 0.3s ease, width 0.3s ease, padding-left 0.3s ease;
+            padding: 10px; 
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item .nav__icon {
+            font-size: 20px; 
+            transition: margin-left 0.3s ease;
+        }
+
+        .nav-item span {
+            display: none;
+            margin-left: 8px;
+            white-space: nowrap;
+        }
+
+        .nav-item.active .nav__icon,  
+        .nav-item.active .span {
+            color: #96C9F4;
+        }
+
+        .navbar_1.expanded .nav-item {
+            width: 150px;
+        }
+
+        .navbar_1.expanded .nav-item .nav__icon {
+            margin-left: 10px;
+        }
+
+        .nav-item:hover {
+            color: #96C9F4;
+            transform: translateX(15px);
+        }
+
+        @media (min-width: 768px) {
+            .navbar_1 {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 60px;
+                height: 100%;
+                flex-direction: column;
+                justify-content: center;
+                z-index: 999;
+                transition: width 0.3s ease;
+            }
+
+            .nav-item {
+                padding: 20px 10px 20px 50px; 
+                width: 60px;
+            }
+
+            .navbar_1.expanded {
+                width: 200px;
+            }
+
+            .navbar_1.expanded .nav-item {
+                width: 100%;
+            }
+
+            .navbar_1.expanded .nav-item .nav__icon {
+                margin-left: 10px; 
+            }
+
+            .navbar_1.expanded .nav-item span {
+                display: inline-block;
+            }
+        }
+
+        footer {
+            background-color: #131419;
+            text-align: center;
+            color: #6c757d;
+            font-weight: 300;
+            font-style: normal;
+            padding: 10px;
+            width: 100%;
+            position: fixed; /* fixed에서 relative로 변경 */
+            margin-bottom: 100px;
+        }
+    </style>
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='src/platform_logo.png') }}" alt="Logo" style="height: 6vh;">
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <div class="content">
+        {% block content %}default content{% endblock %}
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="navbar_1">
+        {% if is_admin %}
+            <a href="{{ url_for('views.dashboard_page') }}" class="nav-item {% if request.endpoint == 'views.dashboard_page' %}active{% endif %}">
+                <ion-icon name="bar-chart-outline" class="nav__icon"></ion-icon>
+                <span class="span">Dashboard</span>
+            </a>
+            <a href="{{ url_for('auth.logout') }}" class="nav-item {% if request.endpoint == 'auth.logout' %}active{% endif %}">
+                <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
+                <span class="span">Logout</span>
+            </a>
+        {% else %}
+            <a href="{{ url_for('views.home') }}" class="nav-item {% if request.endpoint == 'views.home' %}active{% endif %}">
+                <ion-icon name="home-outline" class="nav__icon"></ion-icon>
+                <span class="span">Home</span>
+            </a>
+            <a href="{{ url_for('views.account') }}" class="nav-item {% if request.endpoint == 'views.account' %}active{% endif %}">
+                <ion-icon name="person-circle-outline" class="nav__icon"></ion-icon>
+                <span class="span">Account</span>
+            </a>
+            <a href="{{ url_for('auth.logout') }}" class="nav-item {% if request.endpoint == 'auth.logout' %}active{% endif %}">
+                <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
+                <span class="span">Logout</span>
+            </a>
+        {% endif %}
+    </nav>
+
+    <!-- Footer -->
+    <footer>
+        <p>2024 @ made by 방해금지모드</p>
+    </footer>
+
     {% block scripts %}{% endblock %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navbar = document.querySelector('.navbar_1');
+            const navItems = document.querySelectorAll('.nav-item');
+
+            navItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    navbar.classList.add('expanded');
+                });
+
+                item.addEventListener('mouseleave', () => {
+                    navbar.classList.remove('expanded');
+                });
+            });
+        });
+    </script>
 </body>
 </html>

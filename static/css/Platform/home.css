@@ -1,34 +1,49 @@
-body {
+:root {
+    --background: #131419;
+    --container2: #313236;
+    --container: #f2f2f2;
+    --list: #fff;
+    --text: #131419;
+    --accent1: #FAFFAF;
+    --accent2: #96C9F4;
+    --accent3: #3FA2F6;
+    --accent4: #0F67B1;
+}
+
+@font-face {
+    font-family: 'EF_jejudoldam';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-EF@1.0/EF_jejudoldam.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+body{
+    margin: 0;
+    font-family: 'EF_jejudoldam';
+    color: var(--background);
+    text-align: left;  
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    margin: 0;
-    font-family: "Noto Sans KR", sans-serif;
-    background-color: #131419;
+    min-height: 100vh;
+    width: 100%;
 }
 
-/* 헤더 */ 
-header {
-    background-color: #131419;
-    color: white;
-    font-weight: 600;
-    font-style: normal;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    /* padding: 1em 2em; */
-}
-
-.logo-image {
-    height: 7em;
-    width: 16em;
-}
-
-main {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* 버튼 그리드 */
+.grid {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 20px;
+    padding: 0px 20px 10px 30px;
+    margin: 10px;
 }
 
 @keyframes gentleShake {
@@ -37,201 +52,143 @@ main {
     75% { transform: translateX(5px); }
 }
 
-.button-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 10px;
-    width: 80%;
-    height: 80vh;
-}
-
-.button-grid button {
-    width: 100%;
-    height: 100%;
-    border: none;
-    cursor: pointer;
-    border-radius: 10px;
-    transition: all 0.5s ease;
-    position: relative;
-    box-shadow: inset -2px -2px 6px rgba(255, 255, 255, 0.05), inset 2px 2px 6px rgba(0, 0, 0, 0.8);
-}
-
-.button-grid button {
-    width: 100%;
-    height: 100%;
-    border: none;
-    cursor: pointer;
-    border-radius: 10px;
-    position: relative;
-    background-color: transparent;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    box-shadow: inset -2px -2px 6px rgba(255, 255, 255, 0.05), inset 2px 2px 6px rgba(0, 0, 0, 0.8);
-    animation-fill-mode: none;
-}
-
-/* 호버 시 버튼 확장 */
-.robot-btn:hover, .routine-btn:hover { 
-    transform: scaleY(1.5);
-    transform-origin: bottom;
-    z-index: 1; 
-    background-color: transparent;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-}
-
-.teamintro-btn:hover, .developintro-btn:hover, .serviceintro-btn:hover { 
-    transform: scaleY(1.5);
-    transform-origin: top;
-    z-index: 1; 
-    background-color: transparent;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover; 
-}
-
-/* 마이페이지 버튼 */
-.large-button {
-    grid-column: span 1;
-    grid-row: span 2;
-    background-image: url(../../src/mypage-btn.png);
-    background-color: transparent;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    animation-delay: 0s;
-    animation: gentleShake 0.3s ease-in;
-}
-
-/* 마이페이지 버튼은 호버 시 확장이 없음 */
-.large-button:hover {
-    background-image: url(../../src/mypage-btn-hover.png);
-}
-
-/* 로봇 서비스 버튼 */
-.robot-btn {
-    background-image:url(../../src/robot-btn.png);
-    animation: gentleShake 0.3s ease-in;
-    animation-delay: 0.1s;
-}
-
-/* 스마트 루틴 서비스 버튼 */
-.routine-btn {
-    background-image: url(../../src/routine-btn.png);
-    animation: gentleShake 0.3s ease-in;
-    animation-delay: 0.2s;
-}
-
-/* 서비스 연결 대기 버튼 */
-.wait-btn {
-    background-image: url(../../src/wait-btn.png);
-    animation: gentleShake 0.3s ease-in;
-    animation-delay: 0.3s;
-}
-
-.wait-btn:hover {
-    background-image: url(../../src/wait-btn-hover.png);
-}
-
-/* 팀 소개 페이지 버튼 */
-.teamintro-btn {
-    background-image: url(../../src/teamintro-btn.png);
-    animation: gentleShake 0.3s ease-in;
-    animation-delay: 0.4s;
-}
-
-/* 개발자 소개 페이지 버튼 */
-.developintro-btn {
-    background-image: url(../../src/developintro-btn.png);
-    animation: gentleShake 0.3s ease-in;
-    animation-delay: 0.5s;
-}
-
-/* 서비스 소개 페이지 버튼 */
-.serviceintro-btn {
-    background-image: url(../../src/serviceintro-btn.png);
-    animation: gentleShake 0.3s ease-in;
-    animation-delay: 0.6s;
-}
-
 /* 사용자 프로필 */
 .user-profile {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    background-color: #f2f2f2;
-    border-radius: 20px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    justify-content: space-between;
     transition: all 0.5s ease;
+    grid-column: 1 / span 2;
+    grid-row: 1;
 }
-
 .profile-image-container {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
+    display: inline-block;
+    width: 90px;
+    height: 90px;
+    border: solid;
+    border-color: var(--container);
+    border-width: 5px;
+    border-radius: 30%;
     overflow: hidden;
-    margin-bottom: 15px;
+    margin-right: 50px; /* 이미지와 텍스트 사이의 간격 조절 */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    animation: gentleShake 0.5s ease-in-out;
 }
-
 .profile-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-
+.user-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    flex-grow: 1;
+}
+.user-name-container {
+    display: flex;
+    align-items: center;
+}
 .profile-name {
-    font-size: 24px;
+    font-family: 'EF_jejudoldam';
+    font-size: 22px;
     font-weight: 600;
-    color: #333;
+    color: var(--container);
     margin: 0;
     letter-spacing: 0.5px;
 }
+.first-name, .second-name {
+    font-size: 14px;
+    display: inline-block;
+    margin: 0 2px;
+    color: var(--container);
+    font-family: 'Pretendard-Regular';
+}
 
-.user-title-container {
+.Today_card {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: 'EF_jejudoldam';
+    background-color: var(--accent2);
+    border-radius: 20px;
+    padding: 20px;
+    color: var(--background);
+    grid-column: 1;
+    grid-row: 2;
+    transform-style: preserve-3d;
+    transition: 300ms all ease-in;
+    animation: gentleShake 0.5s ease-in-out;
+    animation-delay: 0.1s;
 }
-
-.first-name, .second-name {
-    display: inline-block;
-    margin: 0 2px; /* 칭호 사이의 간격 조절 */
+.date-container {
+    display: flex; /* Flexbox 사용 */
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center; /* 수평 가운데 정렬 */
 }
-
-/* .user-profile:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-} */
-
-/* 로그아웃 버튼 */
-.logout-btn {
-    background: none;
-    border: none;
-    color: #ffffff;
-    cursor: pointer;
-    font-size: 1.5em;
-    font-weight: 300;
-    font-style: normal;
-    padding: 0;
-    margin: 0;
-}
-
-.logout-btn:hover {
-    color: #F2B035;
-}
-
-/* 푸터 */
-footer {
-    background-color: #131419;
+#date {
     text-align: center;
-    color: white;
-    font-weight: 300;
-    font-style: normal;
+    color: var(--list);
+    text-shadow: 0px 1px 5px#131419;
+    padding-bottom: 5px;
+    font-size: 28px;
 }
+#weekday {
+    text-align: center;
+    color: var(--list);
+    text-shadow: 0px 1px 5px#131419;
+    font-size: 20px
+}
+
+/* 프로필 관리 네비게이션 버튼 */
+.profile-setting {
+    font-family: 'EF_jejudoldam';
+    border-radius: 20px;
+    padding: 20px;
+    color: var(--container);
+    grid-column: 2;
+    grid-row: 2;
+    background-color: var(--container2);
+    justify-content: center;
+    display: inline-block;
+    box-shadow: none; /* 그림자 제거 */
+    border: none;
+    animation: gentleShake 0.5s ease-in-out;
+    animation-delay: 0.2s;
+}
+
+p {
+    font-size: 20px;
+}
+
+/* 스마트루틴 서비스 네비게이션 버튼 */
+.routine-btn {
+    padding: 20px;
+    background-color: var(--container2);
+    color: var(--background);
+    border-radius: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    grid-column: 1 / span 2;
+    grid-row: 3 / span 4;
+    height: 20em;
+    box-shadow: none; /* 그림자 제거 */
+    border: none; /* 테두리 제거 */
+    animation: gentleShake 0.5s ease-in-out;
+    animation-delay: 0.3s;
+}
+.routine-btn:hover {
+    box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
+}
+
+.text {
+    text-align: center;
+    font-family: 'EF_jejudoldam';
+    color: var(--container);
+    text-shadow: 0px 1px 5px#131419;
+    padding-bottom: 5px;
+    font-size: 28px;
+}
+
