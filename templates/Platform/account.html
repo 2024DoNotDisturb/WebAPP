@@ -1,0 +1,316 @@
+{% extends 'layouts/layout.html' %}
+{% block title %} 유온 Your Own {% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Platform/account.css') }}">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div id="loading-indicator" style="display: none;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden"></span>
+    </div>
+</div>
+
+<div class="container">
+    <div class="main-body">
+        <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+                <!-- 프로필 사진 -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column align-items-center text-center position-relative">
+                            <div class="profile-image-wrapper">
+                                {% if encoded_profile_picture %}
+                                    <img src="data:image/jpeg;base64,{{ encoded_profile_picture }}" alt="User Profile" class="rounded-circle" width="150">
+                                {% else %}
+                                    <img src="{{ url_for('static', filename='src/default-profile-img.png') }}" alt="Default Profile Image" class="rounded-circle" width="150">
+                                {% endif %}  
+                                <!-- Edit 아이콘과 파일 업로드 input -->
+                                <label for="fileInput" class="material-symbols-outlined edit-icon">edit</label>
+                                <input type="file" id="fileInput" style="display: none;">
+                                <!-- Edit 아이콘과 파일 업로드 input 끝 -->
+                            </div>
+                            <div class="mt-3">
+                                <h4>{{ current_user.Username }}</h4>
+                                <p class="text-secondary mb-1">{{ current_user.user_profile[0].FirstName }}
+                                    {{ current_user.user_profile[0].LastName }}</p>
+                                <p class="text-muted font-size-sm">{{ current_user.ID }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 칭호 -->
+                <div class="card mt-3">
+                    <ul class="list-group list-group-flush">
+                        <!-- 칭호1 -->
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline">
+                                    <path
+                                        d="m8 0 1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 6l.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 12l-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 6l-.306-1.854 1.337-1.32.842-1.68L6.331.864z" />
+                                    <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1z" />
+                                </svg>칭호1
+                            </h6>
+                            <span class="text-secondary">{{ current_user.user_profile[0].FirstName }}</span>
+                        </li>
+                        <!-- 칭호2 -->
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline">
+                                    <path
+                                        d="m8 0 1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 6l.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 12l-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 6l-.306-1.854 1.337-1.32.842-1.68L6.331.864z" />
+                                    <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1z" />
+                                </svg>칭호2
+                            </h6>
+                            <span class="text-secondary">{{ current_user.user_profile[0].LastName }}</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 이미지 생성 -->
+                <div class="card mt-3">
+                    <ul class="list-group list-group-flush">
+                        <!-- 칭호1 -->
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="feather feather-globe mr-2 icon-inline" viewBox="0 0 16 16">
+                                    <path d="M6.502 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+                                    <path d="M14 14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zM4 1a1 1 0 0 0-1 1v10l2.224-2.224a.5.5 0 0 1 .61-.075L8 11l2.157-3.02a.5.5 0 0 1 .76-.063L13 10V4.5h-2A1.5 1.5 0 0 1 9.5 3V1z"/>
+                                  </svg> 프로필 이미지 생성
+                            </h6>
+                            <span class="text-generate" id="generate-date">{{latestUsageDate}}</span>
+                            <span class="generate-descrription"> *해당 시간으로부터 20분 뒤 확인 가능합니다.</span>
+                        </li>
+
+                        <!-- 칭호 수정 버튼 -->
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <button id="generate-image-btn" class="edit-title-btn ml-auto">체험하기</button>
+                            <button id="show-image-btn" class="edit-title-btn ml-auto" style="display: none;">사진보기</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="col-md-8">
+                <!-- 계정 정보 -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Name</h6>
+                            </div>
+                            <div class="col-sm-9 text_input">
+                                <span id="username">{{ current_user.Username }}</span>
+                                <input type="text" id="edit-username" class="form-control d-none"
+                                    value="{{ current_user.Username }}">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Current Password</h6>
+                            </div>
+                            <div class="col-sm-6 text_input position-relative">
+                                <span id="password">********</span>
+                                <input type="password" id="edit-password" class="form-control d-none" value="">
+                                <div id="password-match-icon" class="text-white"></div>
+                            </div>
+                            <div class="col-sm-3">
+                                <button id="change-password-btn" class="btn btn-sm btn-secondary" disabled>비밀번호 변경</button>
+                                <button id="check-password-btn" class="btn d-none">일치 확인</button>
+                            </div>
+                        </div>                        
+                        
+                        
+                        <div class="row mt-3" id="change-password-section" style="display: none;">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">New Password</h6>
+                            </div>
+                            <div class="col-sm-6 text_input">
+                                <input type="password" id="new-password" class="form-control">
+                                <span class="pwdFeedbackNew"></span>
+                            </div>
+                            <div class="col-sm-3">
+                                <button id="cancel-password-btn" class="btn d-none">변경 취소</button>
+                            </div>
+                        </div>
+                        <hr>
+                        
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text_input">
+                                <span id="email">{{ current_user.Email }}</span>
+                                <input type="email" id="edit-email" class="form-control d-none"
+                                    value="{{ current_user.Email }}">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Phone</h6>
+                            </div>
+                            <div class="col-sm-9 text_input">
+                                <span id="phone">{{ current_user.Phone }}</span>
+                                <input type="tel" id="edit-phone" class="form-control d-none"
+                                    value="{{ current_user.Phone }}">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Address</h6>
+                            </div>
+                            <div class="col-sm-9 text_input">
+                                <span id="address">{{ current_user.user_profile[0].Address }}</span>
+                                <input type="text" id="edit-address" class="form-control d-none"
+                                    value="{{ current_user.user_profile[0].Address }}">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Status</h6>
+                            </div>
+                            <div class="col-sm-9 text_input">
+                                <select name="status" id="edit-status" class="form-control" disabled>
+                                    <option value="active" {% if current_user.Status=='active' %}selected{%endif %}>활성화</option>
+                                    <option value="inactive" {% if current_user.Status=='inactive' %}selected{% endif %}>비활성화</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-12" style="text-align: right;">
+                                <button id="edit-profile-btn" class="btn">Edit</button>
+                                <button id="save-changes-btn" class="btn d-none">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 구독 정보 -->
+                <div class="row gutters-sm">
+                    <div class="col-sm-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6 class="d-flex align-items-center mb-3">
+                                    <i class="material-icons mr-2" style="color: #96C9F4;">Premium</i>Service1
+                                </h6>
+                                <small>2024.12.01 - 2024.12.31</small>
+                                <div class="progress mb-3" style="height: 5px">
+                                    <div class="progress-bar" role="progressbar" style="width: 80%"
+                                        aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <small>Pay</small>
+                                <div class="progress mb-3" style="height: 5px">
+                                    <div class="progress-bar" role="progressbar" style="width: 100%"
+                                        aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6 class="d-flex align-items-center mb-3">
+                                    <i class="material-icons mr-2" style="color: #96C9F4;">Basic</i>Service2
+                                </h6>
+                                <small>2024.12.01 - 2024.12.31</small>
+                                <div class="progress mb-3" style="height: 5px">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"
+                                        aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <small>Pay</small>
+                                <div class="progress mb-3" style="height: 5px">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 100%"
+                                        aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 생성 프롬프트 모달 -->
+    <div class="modal fade" id="generateImageModal" tabindex="-1" role="dialog" aria-labelledby="generateImageModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="generateImageModalLabel">프로필 이미지 생성</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- 모달 내용 -->
+                    <form id="imageGenerationForm">
+                        <div class="form-group">
+                            <label for="optionalInput">원하는 그림을 영어로 설명해주세요 (필수)</label>
+                            <input class="form-control" id="prompt" rows="3" placeholder="예시: Beautiful woman"></input>
+                        </div>
+                        <div class="form-group">
+                            <label for="optionalInput">그림에서 원하지 않는 부분을 영어로 설명해주세요 (선택)</label>
+                            <input class="form-control" id="n_prompt" rows="3" placeholder="예시: Nature"></input>
+                        </div>
+
+                        <div class="form-group">
+                            <p style="
+                            text-align: right;
+                            color: gray;
+                            font-size: 0.9rem;">사진 생성시, 20분정도 소요됩니다.</p>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelGenerateBtn">취소</button>
+                    <button type="button" class="btn btn-primary" id="confirmGenerateBtn">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 사진 확인 -->
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">AI 생성 이미지</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img id="modalImage" class="img-fluid mx-auto d-block">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelshowimageBtn">취소</button>
+                    <button type="button" class="btn btn-primary" id="confirmshowimageBtn">프로필 사진으로 저장</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
+<script src="{{ url_for('static', filename='js/fcm.js') }}"></script>
+<script src="{{ url_for('static', filename='js/Platform/account.js') }}"></script>
+{% endblock %}

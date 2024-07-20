@@ -1,0 +1,227 @@
+{% extends 'layouts/layout_routine.html' %}
+
+{% block title %}해방 Do it{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/SmartRoutine/routine.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/SmartRoutine/routine_setting.css') }}">
+{% endblock %}
+
+{% block content %}
+<main class="container">
+    <h2>오늘의 루틴</h2>
+    <div class="day-buttons">
+        <button class="day-button">일</button>
+        <button class="day-button">월</button>
+        <button class="day-button">화</button>
+        <button class="day-button">수</button>
+        <button class="day-button">목</button>
+        <button class="day-button">금</button>
+        <button class="day-button">토</button>
+    </div>
+    <section class="routine-section">
+        <ul id="routine-list">
+            <!-- RoutineActions의 starttime, routinename, actiontype 나열 : 필터 - Date가 오늘 날짜 -->
+                <li id="no-routine-message">루틴을 설정하세요!</li>
+        </ul>
+        <div class="button-container">
+            <button type="button" class="button">
+                <span class="buttontext">루틴 추가 &nbsp;&nbsp;&nbsp;</span>
+                <span class="buttonicon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" fill="none" class="svg">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </span>
+            </button>
+        </div>
+    </section>
+
+    <section class="title-section">
+        <h2>칭호 리스트</h2>
+        <div id="title-list">
+            <div class="title-container">
+                <ul class="title-item-left">
+                    <!-- 왼쪽 (First) 칭호 목록이 여기에 동적으로 추가됩니다 -->
+                </ul>
+                <ul class="title-item-right">
+                    <!-- 오른쪽 (Second) 칭호 목록이 여기에 동적으로 추가됩니다 -->
+                </ul>
+            </div>
+            <p id="no-title-message" style="display: none;">획득한 칭호가 없습니다!</p>
+        </div>
+    </section>
+</main> 
+
+<!-- 모달 배경 -->
+<div class="modal-background">
+    <!-- 칭호 착용 모달-->
+    <div class="title-setting">
+        <div class="title-setting-content">
+            <p class="title-setting-heading"></p>
+            <p class="title-setting-description">
+                "<span class="title-name"></span>" 칭호를 <br> 착용하시겠습니까?
+            </p>
+        </div>
+        <div class="title-setting-button-wrapper">
+            <button class="title-setting-button secondary">취소</button>
+            <button class="title-setting-button primary">착용</button>
+        </div>
+        <button class="exit-button">
+            <svg height="20px" viewBox="0 0 384 512">
+                <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"></path>
+            </svg>
+        </button>
+    </div>
+</div>
+
+
+<!-- 루틴 설정 모달 -->
+<div class="modal fullscreen" id="routineModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">루틴 추가</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="question">
+                    <div class="radio-inputs2">
+                        <label>
+                            <input checked="" class="radio-input" type="radio" name="routine" id="6">
+                                <span class="radio-tile">
+                                    <span class="radio-icon">
+                                        <svg stroke="currentColor" xml:space="preserve" viewBox="0 0 493.407 493.407" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" id="Capa_1" version="1.1" width="200px" height="200px" fill="none"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <path d="M488.474,270.899c-12.647-37.192-47.527-62.182-86.791-62.182c-5.892,0-11.728,0.749-17.499,1.879l-34.324-100.94 c-1.71-5.014-6.417-8.392-11.721-8.392H315.02c-6.836,0-12.382,5.547-12.382,12.382c0,6.836,5.545,12.381,12.382,12.381h14.252 l12.462,36.645H206.069v-21.998l21.732-2.821c3.353-0.434,6.135-3.079,6.585-6.585c0.54-4.183-2.402-8.013-6.585-8.553l-68.929-8.94 c-1.362-0.168-2.853-0.185-4.281,0c-9.116,1.186-15.55,9.537-14.373,18.653c1.185,9.118,9.537,15.55,18.653,14.364l22.434-2.909 v26.004l-41.255,52.798c-14.059-8.771-30.592-13.93-48.349-13.93C41.135,208.757,0,249.885,0,300.443 c0,50.565,41.135,91.7,91.701,91.7c44.882,0,82.261-32.437,90.113-75.095h33.605v12.647h-5.909c-4.563,0-8.254,3.693-8.254,8.254 c0,4.563,3.691,8.254,8.254,8.254h36.58c4.563,0,8.254-3.691,8.254-8.254c0-4.561-3.691-8.254-8.254-8.254h-5.908v-12.647h5.545 c3.814,0,7.409-1.756,9.755-4.756l95.546-122.267l9.776,28.729c-17.854,8.892-32.444,22.965-41.409,41.168 c-10.825,21.973-12.438,46.842-4.553,70.034c12.662,37.201,47.55,62.189,86.815,62.189c10.021,0,19.951-1.645,29.519-4.9 c23.191-7.885,41.926-24.329,52.744-46.302C494.746,318.966,496.367,294.09,488.474,270.899z M143.46,258.542 c7.698,9.488,12.776,21.014,14.349,33.742h-40.717L143.46,258.542z M91.701,367.379c-36.912,0-66.938-30.026-66.938-66.936 c0-36.904,30.026-66.923,66.938-66.923c12.002,0,23.11,3.427,32.864,8.981l-42.619,54.54c-2.917,3.732-3.448,8.794-1.378,13.05 c2.08,4.256,6.4,6.957,11.134,6.957h64.592C148.861,345.906,122.84,367.379,91.701,367.379z M239.69,292.284h-56.707 c-1.839-20.667-10.586-39.329-23.868-53.782l22.191-28.398v32.47c0,6.836,5.545,12.381,12.381,12.381 c6.836,0,12.382-5.545,12.382-12.381v-55.138h115.553L239.69,292.284z M383.546,285.618l6.384,18.79 c1.75,5.151,6.562,8.392,11.721,8.392c1.321,0,2.667-0.21,3.99-0.661c6.471-2.201,9.93-9.23,7.729-15.711l-6.336-18.637 c7.731,1.838,14.221,7.312,16.855,15.083c2.024,5.94,1.613,12.309-1.161,17.935c-2.773,5.626-7.569,9.835-13.509,11.858 c-12.068,4.078-25.716-2.717-29.785-14.671C376.735,300.055,378.597,291.689,383.546,285.618z M461.712,329.994 c-7.908,16.042-21.579,28.044-38.507,33.808c-6.997,2.378-14.244,3.578-21.547,3.578c-28.664,0-54.129-18.249-63.374-45.399 c-5.757-16.926-4.571-35.081,3.328-51.112c6.047-12.27,15.494-22.112,27.165-28.666l8.981,26.416 c-13.414,10.108-19.644,27.931-13.954,44.691c5.522,16.227,20.732,27.124,37.853,27.124c4.378,0,8.707-0.725,12.882-2.145 c10.108-3.434,18.282-10.607,22.999-20.184c4.723-9.585,5.425-20.435,1.982-30.551c-5.545-16.299-21.57-26.787-38.289-26.818 l-8.997-26.472c3.128-0.453,6.28-0.783,9.448-0.783c28.658,0,54.112,18.242,63.351,45.399 C470.788,295.799,469.613,313.96,461.712,329.994z"></path> </g></svg>
+                                    </span>
+                                    <span class="radio-label">휴식</span>
+                                </span>
+                        </label>
+                        <label>
+                            <input class="radio-input" type="radio" name="routine" id="1">
+                            <span class="radio-tile">
+                                <span class="radio-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-brightness-alt-high" viewBox="0 0 16 16" id="Capa_1">
+                                        <path d="M8 3a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 3m8 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5m-13.5.5a.5.5 0 0 0 0-1h-2a.5.5 0 0 0 0 1zm11.157-6.157a.5.5 0 0 1 0 .707l-1.414 1.414a.5.5 0 1 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m-9.9 2.121a.5.5 0 0 0 .707-.707L3.05 5.343a.5.5 0 1 0-.707.707zM8 7a4 4 0 0 0-4 4 .5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5 4 4 0 0 0-4-4m0 1a3 3 0 0 1 2.959 2.5H5.04A3 3 0 0 1 8 8"/>
+                                      </svg>
+                                </span>
+                                <span class="radio-label">기상</span>
+                            </span>
+                        </label>
+
+                        <label>
+                            <input class="radio-input" type="radio" name="routine" id="2">
+                                <span class="radio-tile">
+                                    <span class="radio-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-moon" viewBox="0 0 16 16" id="Capa_1">
+                                            <path d="M7 8a3.5 3.5 0 0 1 3.5 3.555.5.5 0 0 0 .625.492A1.503 1.503 0 0 1 13 13.5a1.5 1.5 0 0 1-1.5 1.5H3a2 2 0 1 1 .1-3.998.5.5 0 0 0 .509-.375A3.5 3.5 0 0 1 7 8m4.473 3a4.5 4.5 0 0 0-8.72-.99A3 3 0 0 0 3 16h8.5a2.5 2.5 0 0 0 0-5z"/>
+                                            <path d="M11.286 1.778a.5.5 0 0 0-.565-.755 4.595 4.595 0 0 0-3.18 5.003 5.5 5.5 0 0 1 1.055.209A3.6 3.6 0 0 1 9.83 2.617a4.593 4.593 0 0 0 4.31 5.744 3.58 3.58 0 0 1-2.241.634q.244.477.394 1a4.59 4.59 0 0 0 3.624-2.04.5.5 0 0 0-.565-.755 3.593 3.593 0 0 1-4.065-5.422z"/>
+                                          </svg>
+                                    </span>
+                                    <span class="radio-label">취침</span>
+                                </span>
+                        </label>
+                        <label>
+                            <input class="radio-input" type="radio" name="routine" id="3">
+                            <span class="radio-tile">
+                                <span class="radio-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-egg-fried" viewBox="0 0 16 16" id="Capa_1">
+                                        <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                        <path d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"/>
+                                    </svg>
+                                </span>
+                                <span class="radio-label">식사</span>
+                            </span>
+                        </label>
+                        <label>
+                            <input class="radio-input" type="radio" name="routine" id="4">
+                            <span class="radio-tile">
+                                <span class="radio-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stars" viewBox="0 0 16 16" id="Capa_1">
+                                        <path d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.73 1.73 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.73 1.73 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.73 1.73 0 0 0 3.407 2.31zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z"/>
+                                      </svg>
+                                </span>
+                                <span class="radio-label">세면</span>
+                            </span>
+                        </label>
+                        <label>
+                            <input class="radio-input" type="radio" name="routine" id="5">
+                            <span class="radio-tile">
+                                <span class="radio-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-closed" viewBox="0 0 16 16" id="Capa_1">
+                                        <path d="M3 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v13h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3zm1 13h8V2H4z"/>
+                                        <path d="M9 9a1 1 0 1 0 2 0 1 1 0 0 0-2 0"/>
+                                      </svg>
+                                </span>
+                                <span class="radio-label">목욕</span>
+                            </span>
+                        </label>
+                    </div>
+                    
+
+                    <p>시작 시간을 입력해주세요.</p>
+                    <input type="time" id="startTimeInput" class="form-control">
+
+                    <p>루틴 소요 시간을 선택해주세요.</p>
+                    <select id="routineSelect" class="form-select">
+                        <option value="30분">30분</option>
+                        <option value="1시간">1시간</option>
+                        <option value="1시간 30분">1시간 30분</option>
+                        <option value="2시간">2시간</option>
+                        <option value="2시간 30분">2시간 30분</option>
+                        <option value="3시간">3시간</option>
+                    </select>
+
+                    <P> 요일을 선택해 주세요</P>
+                    <div class="radio-inputs">
+                        <label class="radio">
+                          <input type="checkbox" name="mon" checked="">
+                          <span class="name">월</span>
+                        </label>
+                        <label class="radio">
+                          <input type="checkbox" name="tue">
+                          <span class="name">화</span>
+                        </label>
+                            
+                        <label class="radio">
+                          <input type="checkbox" name="wed">
+                          <span class="name">수</span>
+                        </label>
+
+                        <label class="radio">
+                            <input type="checkbox" name="thu">
+                            <span class="name">목</span>
+                          </label>
+
+                          <label class="radio">
+                            <input type="checkbox" name="fri">
+                            <span class="name">금</span>
+                          </label>
+
+                          <label class="radio">
+                            <input type="checkbox" name="sat">
+                            <span class="name">토</span>
+                          </label>
+
+                          <label class="radio">
+                            <input type="checkbox" name="sun">
+                            <span class="name">일</span>
+                          </label>
+                    </div>
+
+                    <input type="text" name="text" class="notice_txt_input" placeholder="알림 문구를 입력해주세요">
+                </div>
+                <button class="btn" id="addRoutine">추가</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
+<script src="{{ url_for('static', filename='js/fcm.js') }}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script type="module" src="{{ url_for('static', filename='js/SmartRoutine/routine.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/SmartRoutine/routine_setting.js')}}"></script>
+{% endblock %}

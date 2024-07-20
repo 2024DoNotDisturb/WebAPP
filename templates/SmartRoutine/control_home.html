@@ -1,0 +1,103 @@
+{% extends 'layouts/layout_routine.html' %}
+
+{% block title %}해방 Do it{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/SmartRoutine/control_home.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+{% endblock %}
+
+{% block content %}
+  <div class="switch_wrapper">
+    <div class="switch_container">
+        <div>수면</div>
+        <label class="switch">
+            <input class="cb" type="checkbox" onclick="this.checked ? sendCommand('Sleep') : sendCommand('Wakeup')" />
+            <span class="toggle">
+                <span class="left">수면</span>
+                <span class="right">기상</span>
+            </span>
+        </label>
+    </div>
+
+    <div class="switch_container">
+        <div>침실</div>
+        <label class="switch">
+            <input class="cb" type="checkbox" onclick="this.checked ? sendCommand('Bed_on') : sendCommand('Bed_off')" />
+            <span class="toggle">
+                <span class="left">Off</span>
+                <span class="right">On</span>
+            </span>
+        </label>
+    </div>
+
+    <div class="switch_container">
+        <div>부엌</div>
+        <label class="switch">
+            <input class="cb" type="checkbox" onclick="this.checked ? sendCommand('Kit_on') : sendCommand('Kit_off')" />
+            <span class="toggle">
+                <span class="left">Off</span>
+                <span class="right">On</span>
+            </span>
+        </label>
+    </div>
+
+    <div class="switch_container">
+        <div>화장실</div>
+        <label class="switch">
+            <input class="cb" type="checkbox" onclick="this.checked ? sendCommand('Toi_on') : sendCommand('Toi_off')" />
+            <span class="toggle">
+                <span class="left">Off</span>
+                <span class="right">On</span>
+            </span>
+        </label>
+    </div>
+
+    <div class="switch_container">
+        <div>책상 스탠드</div>
+        <label class="switch">
+            <input class="cb" type="checkbox" onclick="this.checked ? sendCommand('DS_on') : sendCommand('DS_off')" />
+            <span class="toggle">
+                <span class="left">Off</span>
+                <span class="right">On</span>
+            </span>
+        </label>
+    </div>
+
+    <div class="switch_container">
+        <div>전체 제어</div>
+        <div class="radio-input">
+            <input class="all_control green" type="radio" name="radio" onclick="sendCommand('All_on')" />
+            <input checked class="all_control yellow" type="radio" name="radio"/>
+            <input class="all_control red" type="radio" name="radio" onclick="sendCommand('All_off')" />
+        </div>
+    </div>
+
+    <div class="switch_container">
+        <div>부엌 온습도</div>
+        <div class="check_toggle">
+            <input type="checkbox" onclick="sendCommand('C_Kit_HT')" class="kit_temp">
+            <span class="button"></span>
+            <span class="label"><i class="bi bi-thermometer-half"></i></span>
+        </div>
+        <div style="display: none;" id="result_kit">10%</div>
+    </div>
+
+    <div class="switch_container">
+        <div>화장실 온습도</div>
+        <div class="check_toggle">
+            <input type="checkbox" onclick="sendCommand('C_Toi_HT')" class="bath_temp">
+            <span class="button"></span>
+            <span class="label"><i class="bi bi-thermometer-half"></i></span>
+        </div>
+        <div style="display: none;" id="result_bath">10%</div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
+<script src="{{ url_for('static', filename='js/fcm.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/SmartRoutine/control_home.js') }}"></script>
+{% endblock %}

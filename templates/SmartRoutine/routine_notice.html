@@ -1,0 +1,82 @@
+{% extends 'layouts/layout_routine.html' %}
+
+{% block title %}SmartPlatform{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/SmartRoutine/routine_notice.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="card-component">
+    <div class="card">
+        <div class="card-header">
+            <span class="icon">
+                <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path clip-rule="evenodd"
+                        d="M18 3a1 1 0 00-1.447-.894L8.763 6H5a3 3 0 000 6h.28l1.771 5.316A1 1 0 008 18h1a1 1 0 001-1v-4.382l6.553 3.276A1 1 0 0018 15V3z"
+                        fill-rule="evenodd"></path>
+                </svg>
+            </span>
+            <p class="alert msg_title"></p>
+        </div>
+
+        <p class="message">
+        <div class="tab-container">
+            <input type="radio" name="tab" id="tab1" class="tab tab--1" />
+            <label class="tab_label" for="tab1">수동 인식</label>
+
+            <input type="radio" name="tab" id="tab2" class="tab tab--2" />
+            <label class="tab_label" for="tab2">자동 인식</label>
+
+            <div class="indicator"></div>
+        </div>
+
+        <div id="manual-upload" class="upload-container">
+            <h2>인증샷을 올려주세요.</h2>
+
+            <form id="upload-form" enctype="multipart/form-data">
+                <!-- <input type="file" id="image-upload" name="image" accept="image/*" required> -->
+                <label class="custum-file-upload" for="file">
+                    <div class="icon2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24">
+                            <g stroke-width="0" id="SVGRepo_bgCarrier"></g>
+                            <g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path fill=""
+                                    d="M10 1C9.73478 1 9.48043 1.10536 9.29289 1.29289L3.29289 7.29289C3.10536 7.48043 3 7.73478 3 8V20C3 21.6569 4.34315 23 6 23H7C7.55228 23 8 22.5523 8 22C8 21.4477 7.55228 21 7 21H6C5.44772 21 5 20.5523 5 20V9H10C10.5523 9 11 8.55228 11 8V3H18C18.5523 3 19 3.44772 19 4V9C19 9.55228 19.4477 10 20 10C20.5523 10 21 9.55228 21 9V4C21 2.34315 19.6569 1 18 1H10ZM9 7H6.41421L9 4.41421V7ZM14 15.5C14 14.1193 15.1193 13 16.5 13C17.8807 13 19 14.1193 19 15.5V16V17H20C21.1046 17 22 17.8954 22 19C22 20.1046 21.1046 21 20 21H13C11.8954 21 11 20.1046 11 19C11 17.8954 11.8954 17 13 17H14V16V15.5ZM16.5 11C14.142 11 12.2076 12.8136 12.0156 15.122C10.2825 15.5606 9 17.1305 9 19C9 21.2091 10.7909 23 13 23H20C22.2091 23 24 21.2091 24 19C24 17.1305 22.7175 15.5606 20.9844 15.122C20.7924 12.8136 18.858 11 16.5 11Z"
+                                    clip-rule="evenodd" fill-rule="evenodd"></path>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="text">
+                        <span>Click to upload image</span>
+                    </div>
+                    <input type="file" id="image-upload" accept="image/*" required>
+                </label>
+                <br>
+                <input type="text" id="text-prompt" name="prompt"
+                    placeholder="먹은 음식의 이름을 영어로 말해주세요! (ex) korean food, rice, soup etc" required>
+                <br>
+                <button type="submit">식사 인증하기</button>
+            </form>
+            <div id="result"></div>
+        </div>
+        </p>
+
+        <div class="actions">
+            <a class="read" href="">
+                확인
+            </a>
+            <a class="mark-as-read" href="">
+                취소
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
+<script src="{{ url_for('static', filename='js/fcm.js') }}"></script>
+<script src="{{ url_for('static', filename='js/SmartRoutine/routine_notice.js') }}"></script>
+{% endblock %}
