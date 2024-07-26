@@ -43,6 +43,10 @@ Zero-shot learning은 따로 fine-tuning의 과정이 없어도 사전 학습되
 ## 팀 소개
 <img width="681" alt="스크린샷 2024-07-26 11 49 46" src="https://github.com/user-attachments/assets/4cc6bf24-55fb-4f47-a991-82174ea80dd2">
 
+|팀장|웹 개발|스마트홈 개발|AI 개발|
+|:---:|:---:|:---:|:---:|
+| [김윤정](https://github.com/kingodjerry) | [이지현](https://github.com/jh226) | [유태양](https://github.com/IAMYUTAEYANG) |  [최원진](https://github.com/onejin123) |
+
 ## 코드 사용법
 1. git clone   
 ```git clone https://github.com/2024DoNotDisturb/WebAPP.git```   
