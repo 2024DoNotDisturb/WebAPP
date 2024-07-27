@@ -47,6 +47,10 @@ Zero-shot learning은 따로 fine-tuning의 과정이 없어도 사전 학습되
 |:---:|:---:|:---:|:---:|
 | [김윤정](https://github.com/kingodjerry) | [이지현](https://github.com/jh226) | [유태양](https://github.com/IAMYUTAEYANG) |  [최원진](https://github.com/onejin123) |
 
+## 사용 도구와 언어 Tools and Stacks
+<img width="793" alt="스크린샷 2024-07-27 21 13 35" src="https://github.com/user-attachments/assets/0b33bd5d-7762-43de-bb82-d988625d4e69">
+
+
 ## 코드 사용법
 1. git clone   
 ```git clone https://github.com/2024DoNotDisturb/WebAPP.git```   
