@@ -60,7 +60,7 @@ Zero-shot learning은 따로 fine-tuning의 과정이 없어도 사전 학습되
 각자 환경이 다르므로 패키지 충돌이 일어날 수 있습니다. Werkzeug 패키지는 2.2.2 버전 추천합니다.
 
 3. GroundingDINO 모델 clone 및 가중치 파일 다운로드   
-```git clone https://github.com/IDEA-Research/GroundingDINO.git```
+```git clone https://github.com/IDEA-Research/GroundingDINO.git```   
 ```wget https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth```   
 설치한 후, ```cd GroungindDINO```폴더로 이동해서 ```pip install -e .```   
 
