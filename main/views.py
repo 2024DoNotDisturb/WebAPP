@@ -90,4 +90,4 @@ def control_home():
 
 @views_bp.route('/notification')
 def notification():
-    return render_template('notification.html')
+    return render_template('SmartRoutine/routine_notice.html')
