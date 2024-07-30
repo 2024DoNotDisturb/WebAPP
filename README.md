@@ -69,3 +69,81 @@ Zero-shot learning은 따로 fine-tuning의 과정이 없어도 사전 학습되
 6. ```FLASKA_APP=app.py``` 로 지정   
 
 7. ```flask run```
+
+## 파일 구조 File Tree
+```
+ WebAPP
+ ┣ main                                               # Backend 관련 파일
+ ┃ ┣ auth.py                                          # 로그인
+ ┃ ┣ dashboard.py                                     # 관리자 대시보드
+ ┃ ┣ fcm.py                                           # 루틴 알람
+ ┃ ┣ food.py                                          # GroundingDINO - 루틴 수행 감지
+ ┃ ┣ generate_ai.py                                   # Stable Diffusion - AI 프로필 이미지 생성
+ ┃ ┣ profile.py                                       # 프로필 관리
+ ┃ ┣ routine_home.py                                  # 홈 화면 관리
+ ┃ ┣ routine_schedule.py                              # 루틴 리스트 관리
+ ┃ ┣ smarthome.py                                     # 스마트홈 리모컨
+ ┃ ┣ title.py                                         # 사용자 칭호 관리
+ ┃ ┗ views.py                                         # 화면 관리
+ ┣ model                                              # Database 관련 파일
+ ┃ ┣ google.py                                        # 구글 로그인 관리
+ ┃ ┣ model_platform.py                                # DB 연결 - platform
+ ┃ ┗ model_routine.py                                 # DB 연결 - routine_service
+ ┣ GorundingDINO                                      # git clone GroundingDINO 
+ ┣ src
+ ┃ ┗ groundingdino
+ ┣ static                                             # Frontend 관련 파일
+ ┃ ┣ css                                              # css 파일
+ ┃ ┃ ┣ Platform
+ ┃ ┃ ┃ ┣ account.css
+ ┃ ┃ ┃ ┣ dashboard.css
+ ┃ ┃ ┃ ┣ home.css
+ ┃ ┃ ┃ ┣ login.css
+ ┃ ┃ ┃ ┣ m_login.css
+ ┃ ┃ ┃ ┗ sidebar.css
+ ┃ ┃ ┗ SmartRoutine
+ ┃ ┃ ┃ ┣ control_home.css
+ ┃ ┃ ┃ ┣ loading.css
+ ┃ ┃ ┃ ┣ routine.css
+ ┃ ┃ ┃ ┗ routine_notice.css
+ ┃ ┣ js                                                # js 파일
+ ┃ ┃ ┣ Platform
+ ┃ ┃ ┃ ┣ account.js
+ ┃ ┃ ┃ ┣ dashboard.js
+ ┃ ┃ ┃ ┣ home.js
+ ┃ ┃ ┃ ┣ login.js
+ ┃ ┃ ┃ ┣ m_login.js
+ ┃ ┃ ┃ ┗ sidebar.js
+ ┃ ┃ ┣ SmartRoutine
+ ┃ ┃ ┃ ┣ control_home.js
+ ┃ ┃ ┃ ┣ loading.js
+ ┃ ┃ ┃ ┣ routine.js
+ ┃ ┃ ┃ ┗ routine_notice.js
+ ┃ ┃ ┣ fcm.js
+ ┃ ┃ ┗ firebase-messaging-sw.js
+ ┃ ┗ src              
+ ┣ templates                                            # html 파일
+ ┃ ┣ Platform
+ ┃ ┃ ┣ account.html
+ ┃ ┃ ┣ dashboard.html
+ ┃ ┃ ┣ donotdisturb.html
+ ┃ ┃ ┣ error.html
+ ┃ ┃ ┣ home.html
+ ┃ ┃ ┣ introdeveloper.html
+ ┃ ┃ ┣ introservice.html
+ ┃ ┃ ┣ login.html
+ ┃ ┃ ┗ m_login.html
+ ┃ ┣ SmartRoutine
+ ┃ ┃ ┣ control_home.html
+ ┃ ┃ ┣ loading.html
+ ┃ ┃ ┣ routine.html
+ ┃ ┃ ┗ routine_notice.html
+ ┃ ┗ layouts
+ ┃ ┃ ┣ layout.html
+ ┃ ┃ ┗ layout_routine.html
+ ┣ app.py                                                # flask server 실행 파일
+ ┣ config.py                                             # DB 환경 설정 파일
+ ┣ firebase-adminsdk.json                                # 알람 관련 파일
+ ┣ key.py                                                # 사용되는 key 관리 파일
+ ┗ requirements.txt
+```
