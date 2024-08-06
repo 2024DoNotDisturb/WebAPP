@@ -28,22 +28,32 @@ GPT와 같은 인공지능 기술이 발전하면서, 사람들이 스스로 의
 <img width="680" alt="스크린샷 2024-07-26 11 41 02" src="https://github.com/user-attachments/assets/418ba835-74f0-4eee-89cd-78d1d89caa3c">
 
 ## 사용한 AI model
-**Grounging DINO**는 **Zero-shot learning을 사용한 object detection 모델**입니다.    
-Zero-shot learning은 따로 fine-tuning의 과정이 없어도 사전 학습되지 않은 객체를 인식할 수 있는 학습법입니다. 이러한 점을 활용해서 사용자가 루틴 수행 인증샷을 촬영하여 업로드하고, **Grounding DINO**를 통해 루틴 성공여부를 확인할 수 있도록 제작했습니다!   
-<img width="681" alt="스크린샷 2024-07-26 11 43 36" src="https://github.com/user-attachments/assets/4c23b5bc-901f-4436-bee5-ee8488cb5a61">
-<img width="682" alt="스크린샷 2024-07-26 11 43 56" src="https://github.com/user-attachments/assets/649e5c3d-4c3e-4d8f-92fb-8fa35af6fe16">
-<img width="680" alt="스크린샷 2024-07-26 11 44 14" src="https://github.com/user-attachments/assets/cbdc3531-589b-4fc8-89e6-0bf46440984c">
-<br>
+### GroundingDINO
+**DroundingDINO는 Zero-shot learning 기반 Object Detection 모델입니다.**     
+- 식사루틴 수행 감지 역할
+- 텍스트 프롬프트(음식명)과 인증샷 이미지(음식사진)을 입력받아 사용자의 루틴 수행 감지
+- 비지도학습이지만, Transformer 기반 아키텍처로 좋은 성능을 보임
+- 사용자 : 자연스럽게 식단 일지 작성과 식습관 회고
+- 관리자 : 번거로운 인증샷 검사 과정 자동화 
+![스크린샷 2024-08-06 10 04 32](https://github.com/user-attachments/assets/57d29615-80ef-46f8-a12f-65d112990cf6)
+![스크린샷 2024-08-06 10 11 07](https://github.com/user-attachments/assets/57000457-50ed-4e8b-93d5-930c00ccdee4)
+![스크린샷 2024-08-06 10 12 13](https://github.com/user-attachments/assets/1e174dfb-6780-4e8f-b62a-e846354ce37d)
+![스크린샷 2024-08-06 10 12 31](https://github.com/user-attachments/assets/51ecab9e-df70-434a-b20e-83d3c8bf6417)
+   
+   
+### Stable Diffusion
+**프로필 이미지 생성 AI는 **Stable diffusion**을 사용했습니다.**    
+- 오픈소스 이미지 생성 모델로, Text to Image 모델을 사용
 
+![스크린샷 2024-08-06 10 13 50](https://github.com/user-attachments/assets/ac39ec13-fe82-4cb3-9a91-02096b918338)
+![스크린샷 2024-08-06 10 14 10](https://github.com/user-attachments/assets/fc81c7b6-6b82-4157-8409-60586760f005)
 
-프로필 이미지 생성 AI는 **Stable diffusion**을 사용했습니다. 
-<img width="679" alt="스크린샷 2024-07-26 11 49 00" src="https://github.com/user-attachments/assets/a82b75d5-f27f-4d92-89a6-992a0ba1681e">
-<img width="679" alt="스크린샷 2024-07-26 11 49 23" src="https://github.com/user-attachments/assets/79499e3c-cf0b-47f8-bec1-c7efc414a782">
 
 ## 팀 소개
-<img width="681" alt="스크린샷 2024-07-26 11 49 46" src="https://github.com/user-attachments/assets/4cc6bf24-55fb-4f47-a991-82174ea80dd2">
+![스크린샷 2024-08-06 10 23 58](https://github.com/user-attachments/assets/3b7067c3-259a-4727-9bf0-c247ae365775)
 
-|팀장|웹 개발|스마트홈 개발|AI 개발|
+
+|팀장/프로젝트 기획 및 관리|웹 개발|스마트홈 개발|AI 개발|
 |:---:|:---:|:---:|:---:|
 | [김윤정](https://github.com/kingodjerry) | [이지현](https://github.com/jh226) | [유태양](https://github.com/IAMYUTAEYANG) |  [최원진](https://github.com/onejin123) |
 
