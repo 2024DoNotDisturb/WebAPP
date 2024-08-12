@@ -48,6 +48,8 @@ GPT와 같은 인공지능 기술이 발전하면서, 사람들이 스스로 의
 ![스크린샷 2024-08-06 10 13 50](https://github.com/user-attachments/assets/ac39ec13-fe82-4cb3-9a91-02096b918338)
 ![스크린샷 2024-08-06 10 14 10](https://github.com/user-attachments/assets/fc81c7b6-6b82-4157-8409-60586760f005)
 
+## 제작한 스마트홈 회로도
+![스크린샷 2024-08-12 10 08 47](https://github.com/user-attachments/assets/d71d9906-d11a-4876-86a7-3962c4c34950)
 
 ## 팀 소개
 ![스크린샷 2024-08-06 10 23 58](https://github.com/user-attachments/assets/3b7067c3-259a-4727-9bf0-c247ae365775)
